@@ -125,7 +125,7 @@ function perhaps_submit(){
   coords = canvas.relMouseCoords(event);
   canvasX = coords.x;
   canvasY = coords.y;
-  if (distance(canvasX, canvasY, atox[3], btoy[0]) < r){
+  if (distance(canvasX, canvasY, atox[2], btoy[0]) < r){
     document.getElementById("new_game").submit();
   }
 }
@@ -285,7 +285,7 @@ function menu_bar(){
   color_based_on_state("menu", max_a-3, 0);
   color_based_on_state("menu", max_a-2, 0);
   color_based_on_state("menu", max_a-1, 0);
-  color_based_on_state("menu", 3, 0);
+  color_based_on_state("menu", 2, 0);
 
 
   var nov = number_of_vertices();
@@ -294,7 +294,7 @@ function menu_bar(){
   print_string_at("\u2013", max_a-3, 0);
   print_string_at(max_vertex, max_a-2, 0);
   print_string_at("+", max_a-1, 0);
-  print_string_at("S", 3, 0);
+  print_string_at("S", 2, 0);
   return [nov, prox_score]
 }
 
