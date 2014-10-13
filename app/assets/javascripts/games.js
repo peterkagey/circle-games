@@ -1,10 +1,36 @@
 //Canvas setup.
 var canvas = document.getElementById("game_canvas");
-canvas.width = 0.99*(window.innerWidth);
+canvas.width = window.innerWidth;
 canvas.height = window.innerHeight; // canvas.height = .9*window.innerHeight - 120;
-canvas.style.border = "3px solid #222222"
+// canvas.style.border = "3px solid #222222"
 var context = canvas.getContext("2d");
 context.fillStyle = "#cccccc";
+
+scrollCompensate = function () {
+    var inner = document.createElement('p');
+    inner.style.width = "100%";
+    inner.style.height = "200px";
+
+    var outer = document.createElement('div');
+    outer.style.position = "absolute";
+    outer.style.top = "0px";
+    outer.style.left = "0px";
+    outer.style.visibility = "hidden";
+    outer.style.width = "200px";
+    outer.style.height = "150px";
+    outer.style.overflow = "hidden";
+    outer.appendChild(inner);
+
+    document.body.appendChild(outer);
+    var w1 = inner.offsetWidth;
+    outer.style.overflow = 'scroll';
+    var w2 = inner.offsetWidth;
+    if (w1 == w2) w2 = outer.clientWidth;
+
+    document.body.removeChild(outer);
+
+    return (w1 - w2);
+}
 
 // http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
 HTMLCanvasElement.prototype.relMouseCoords = function (event) {
@@ -31,12 +57,12 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
 
 
 color1 = '#404040'; color2 = '#444444'; color3 = '#346a5b'; color4 = '#2c4d75';
-r = 20; //Math.min(20, 0.4*(canvas.width)/11, 0.4*(canvas.height)/6);
+// r = Math.min(25, 0.4*(canvas.width)/11, 0.4*(canvas.height)/6);
 w = canvas.width; h = canvas.height;
 
-  r = Math.min(0.8*w/(8*2), 25);
-  canvas.width = 16*r/0.70;
-  canvas.height = 24*r/0.70;
+canvas.width = Math.min(w-scrollCompensate(), 500-scrollCompensate())
+canvas.height = canvas.width/8*12;
+r = Math.min(25, 0.5*canvas.width/10);
 
 // max_a = Math.floor(0.8*w/(2*r)); max_b = Math.floor(0.8*h/(2*r));
 max_a = 8; max_b = 12
