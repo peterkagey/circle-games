@@ -1,0 +1,35 @@
+<title>Title | Foobar</title>
+<!-- <div class = "protector"></div> -->
+
+<!-- <div class = "header">
+	<div id = "title"> Website </div>
+	<div id = "links"> A :: Few :: Miscellaneous :: Links :: &c. </div>
+</div>
+
+<div class = "header2">
+	<div id="foo"> Div Header</div>
+</div>
+ -->
+<div class = "right_paragraph">
+	<ul plain>
+		<lh><b> Records </b></lh>
+		<% lowest_level = Game.all.order(:level).first.level %>
+		<% highest_level = Game.all.order(:level).last.level %>
+		<% for i in (lowest_level..highest_level)%>
+			<% best_game = Game.where(level:i).order(:vertices).first.try(:vertices) %>
+			<%= "<li> f(#{i}) = #{best_game} </li>".html_safe if best_game %>
+		<% end %>
+	</ul>
+</div>
+
+<div class = "left_paragraph">
+	<canvas id="game_canvas" onclick = "click_function()"></canvas>
+	<%= form_for @game do |f| %>
+		<%= f.text_field :vertices, size:1 %> <!-- FIXME hidden_field -->
+		<%= f.text_field :level, size:1 %>
+		<%= f.text_field :max_a, size:1 %> <br>
+		<%= f.text_field :solution, size:30 %>
+		<%= f.submit %>
+	<% end %>
+	<%= javascript_include_tag 'games' %>
+</div>

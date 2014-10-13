@@ -1,0 +1,1 @@
+PkWebsite::Application.config.secret_key_base = '19ee95c63ee4a84b18e3341d57c1f076ff116e882a80f991b1fbb490d7a3a427e38064c00cf223728e72fa7ca797901404f09fd359a58e5a26c47f1484ae9ce2'
