@@ -1,11 +1,4 @@
-//Canvas setup.
-var canvas = document.getElementById("game_canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight; // canvas.height = .9*window.innerHeight - 120;
-// canvas.style.border = "3px solid #222222"
-var context = canvas.getContext("2d");
-context.fillStyle = "#cccccc";
-
+//http://stackoverflow.com/questions/19172936/javascript-get-window-width-minus-scrollbar-width
 scrollCompensate = function () {
     var inner = document.createElement('p');
     inner.style.width = "100%";
@@ -34,38 +27,36 @@ scrollCompensate = function () {
 
 // http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
 HTMLCanvasElement.prototype.relMouseCoords = function (event) {
-    var totalOffsetX = 0;
-    var totalOffsetY = 0;
-    var canvasX = 0;
-    var canvasY = 0;
-    var currentElement = this;
+  var totalOffsetX = 0;
+  var totalOffsetY = 0;
+  var canvasX = 0;
+  var canvasY = 0;
+  var currentElement = this;
 
-    do {
-        totalOffsetX += currentElement.offsetLeft;
-        totalOffsetY += currentElement.offsetTop;
-    }
-    while (currentElement = currentElement.offsetParent)
+  do {
+      totalOffsetX += currentElement.offsetLeft;
+      totalOffsetY += currentElement.offsetTop;
+  }
+  while (currentElement = currentElement.offsetParent)
 
-    canvasX = event.pageX - totalOffsetX;
-    canvasY = event.pageY - totalOffsetY;
+  canvasX = event.pageX - totalOffsetX;
+  canvasY = event.pageY - totalOffsetY;
 
-    canvasX = Math.round( canvasX * (this.width / this.offsetWidth) );
-    canvasY = Math.round( canvasY * (this.height / this.offsetHeight) );
+  canvasX = Math.round( canvasX * (this.width / this.offsetWidth) );
+  canvasY = Math.round( canvasY * (this.height / this.offsetHeight) );
 
-    return {x:canvasX, y:canvasY}
+  return {x:canvasX, y:canvasY}
 }
 
-
+//Canvas setup.
+max_a = 6; max_b = 10
+var canvas = document.getElementById("game_canvas");
+canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*max_a)
+canvas.height = canvas.width/max_a*max_b;
+var context = canvas.getContext("2d");
+context.fillStyle = "#cccccc";
 color1 = '#404040'; color2 = '#444444'; color3 = '#346a5b'; color4 = '#2c4d75';
-// r = Math.min(25, 0.4*(canvas.width)/11, 0.4*(canvas.height)/6);
-w = canvas.width; h = canvas.height;
-
-canvas.width = Math.min(w-scrollCompensate(), 500-scrollCompensate())
-canvas.height = canvas.width/8*12;
-r = Math.min(25, 0.5*canvas.width/10);
-
-// max_a = Math.floor(0.8*w/(2*r)); max_b = Math.floor(0.8*h/(2*r));
-max_a = 8; max_b = 12
+r = Math.min(25, 0.5*canvas.width/(max_a*1.25));
 
 var label = [];
 var atox = []; var btoy = [];
