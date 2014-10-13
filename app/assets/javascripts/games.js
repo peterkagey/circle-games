@@ -1,6 +1,6 @@
 //Canvas setup.
 var canvas = document.getElementById("game_canvas");
-canvas.width = 0.99*(window.innerWidth - 165);
+canvas.width = 0.99*(window.innerWidth);
 canvas.height = window.innerHeight; // canvas.height = .9*window.innerHeight - 120;
 canvas.style.border = "3px solid #222222"
 var context = canvas.getContext("2d");
