@@ -35,8 +35,8 @@ r = 20; //Math.min(20, 0.4*(canvas.width)/11, 0.4*(canvas.height)/6);
 w = canvas.width; h = canvas.height;
 
   r = Math.min(0.8*w/(8*2), 25);
-  canvas.width = 16*r/0.75;
-  canvas.height = 24*r/0.75;
+  canvas.width = 16*r/0.70;
+  canvas.height = 24*r/0.70;
 
 // max_a = Math.floor(0.8*w/(2*r)); max_b = Math.floor(0.8*h/(2*r));
 max_a = 8; max_b = 12
