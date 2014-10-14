@@ -18,7 +18,7 @@
 		<% highest_level = Game.all.order(:level).last.level %>
 		<% for i in (lowest_level..highest_level)%>
 			<% best_game = Game.where(level:i).order(:vertices).first.try(:vertices) %>
-			<%= "<li> f(#{i}) = #{best_game} </li>".html_safe if best_game %>
+			<%= "<li> f(#{i}) ≤ #{best_game} </li>".html_safe if best_game %>
 		<% end %>
 	</ul>
 </div>
