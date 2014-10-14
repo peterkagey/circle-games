@@ -49,7 +49,16 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
 }
 
 //Canvas setup.
-max_a = 12; max_b = 12;
+if (window.innerWidth < 600){
+  max_a = 6; 
+  max_b = 8;
+}else if(window.innerWidth < 1200){
+  max_a = 12; 
+  max_b = 10;
+}else{
+  max_a = 18; 
+  max_b = 10;  
+}
 var canvas = document.getElementById("game_canvas");
 canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*max_a)
 canvas.height = canvas.width/max_a*max_b;
@@ -62,14 +71,13 @@ var label = [];
 var atox = []; var btoy = [];
 var max_vertex = 3;
 var game_matrix;
-w = canvas.width; h = canvas.height;
 
 function initialize_atox_and_btoy(){
   for (a = 0; a < max_a ; a++){
-    atox[a] = 0.5*(w/max_a) + a*w/max_a;
+    atox[a] = 0.5*(canvas.width/max_a) + a*canvas.width/max_a;
   }
   for (b = 0; b < max_b ; b++){
-     btoy[b] = 0.5*h/max_b + b*h/max_b;
+     btoy[b] = 0.5*canvas.height/max_b + b*canvas.height/max_b;
   }}
 
 function intialize_labels(){
@@ -99,8 +107,8 @@ function print_string_at(text_string, a, b){
 function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));}
 
 function update_state(a,b){
-  i2 = index(a,b);
-  label[i2] = (label[i2] + max_vertex) % (max_vertex+1);
+  i = index(a,b);
+  label[i] = (label[i] + max_vertex) % (max_vertex+1);
 }
 
 function color_based_on_state(state, a, b){
@@ -152,11 +160,9 @@ function change_circle_on_click(){
       break;
     }
   }
-
   if (distance(atox[a], btoy[b], canvasX, canvasY) < r){ 
     update_state(a,b);
-    color_based_on_state(label[index(a, b)], a, b);
-    return
+    return;
   }
 }
 
@@ -206,14 +212,14 @@ function max_label(){
 
 function reset_game_matrix(){
   n = max_label();
-  var matricks = [];
-  for(i2=0; i2 < n; i2++) {
-    matricks[i2] = [];
-    for(j2=0; j2 < n; j2++) {
-      matricks[i2][j2] = 0;
+  var matrix = [];
+  for(i=0; i < n; i++) {
+    matrix[i] = [];
+    for(j=0; j < n; j++) {
+      matrix[i][j] = 0;
     }
   }
-  return matricks}
+  return matrix}
 
 function i_touches_j(i, j, matrix){
   if (i==0 || j == 0){return}
@@ -222,9 +228,9 @@ function i_touches_j(i, j, matrix){
 
 function largest_full_submatrix(matrix){
   for (n = 0; n < matrix.length+1; n++){
-    for (i2 = 0; i2 < n; i2++){
-      for (i3 = 0; i3 < n; i3++){
-        if( matrix[i2][i3] == 0){
+    for (i = 0; i < n; i++){
+      for (j = 0; j < n; j++){
+        if( matrix[i][j] == 0){
           return n-1
         }
       }
@@ -249,15 +255,16 @@ function compare_right_and_down_and_draw(a,b){
   down_state = label[index(a,b+1)];
   }
 
-  if (ab_state != 0 && right_state > 0){
+  if (ab_state > 0 && right_state > 0){
     draw_line(a, b, a+1, b);
     i_touches_j(ab_state,right_state,game_matrix);
   }
 
-  if (ab_state != 0 && down_state > 0){
+  if (ab_state > 0 && down_state > 0){
     draw_line(a, b, a, b+1);
     i_touches_j(ab_state, down_state, game_matrix);
-  }}
+  }
+}
 
 function calculate_proximity_and_draw_all_lines(){
   for (b = 1; b < max_b ; b++){

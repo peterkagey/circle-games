@@ -11,6 +11,17 @@
 	<div id="foo"> Div Header</div>
 </div>
  -->
+<div class = "left_paragraph">
+	<canvas id="game_canvas" onclick = "click_function()"></canvas>
+	<%= form_for @game do |f| %>
+		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
+		<%= f.hidden_field :level, size:1 %>
+		<%= f.hidden_field :max_a, size:1 %>
+		<%= f.hidden_field :solution, size:30 %>
+		<%#= f.submit %>
+	<% end %>
+	<%= javascript_include_tag 'games' %>
+</div>
 <div class = "right_paragraph">
 	<ul plain>
 		<lh><b> Records </b></lh>
@@ -21,16 +32,4 @@
 			<%= "<li> f(#{i}) ≤ #{best_game} </li>".html_safe if best_game %>
 		<% end %>
 	</ul>
-</div>
-
-<div class = "left_paragraph">
-	<canvas id="game_canvas" onclick = "click_function()"></canvas>
-	<%= form_for @game do |f| %>
-		<%= f.text_field :vertices, size:1 %> <!-- FIXME hidden_field -->
-		<%= f.text_field :level, size:1 %>
-		<%= f.text_field :max_a, size:1 %> <br>
-		<%= f.text_field :solution, size:30 %>
-		<%= f.submit %>
-	<% end %>
-	<%= javascript_include_tag 'games' %>
 </div>
