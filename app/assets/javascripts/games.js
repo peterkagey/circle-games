@@ -194,11 +194,22 @@ function draw_line(a1, b1, a2, b2){
 
 function index(a,b){return max_a*(b-1) + a}
 
+function max_label(){
+  var max_l = 0
+  for (i = 0; i < label.length; i++){
+    if (label[i] > max_l){
+      max_l = label[i];
+    }
+  }
+  return max_l
+}
+
 function reset_game_matrix(){
+  n = max_label();
   var matricks = [];
-  for(i2=0; i2 < max_vertex; i2++) {
+  for(i2=0; i2 < n; i2++) {
     matricks[i2] = [];
-    for(j2=0; j2 < max_vertex; j2++) {
+    for(j2=0; j2 < n; j2++) {
       matricks[i2][j2] = 0;
     }
   }
@@ -208,15 +219,6 @@ function i_touches_j(i, j, matrix){
   if (i==0 || j == 0){return}
   matrix[i-1][j-1] = 1;
   matrix[j-1][i-1] = 1;}
-
-function sum_matrix(matrix){
-  var sum = 0;
-  for (i2=0; i2 < matrix.length; i2++){
-    for (j2=0; j2 < matrix[0].length; j2++){
-      sum = sum + matrix[i2][j2];
-    }
-  }
-  return sum;}
 
 function largest_full_submatrix(matrix){
   for (n = 0; n < matrix.length+1; n++){
@@ -293,9 +295,9 @@ function set_rails_values(ver, lev, lab){
 }
 
 function click_function(){
-  reset_canvas()
-  game_matrix = reset_game_matrix();
   change_circle_on_click();
+  reset_canvas();
+  game_matrix = reset_game_matrix();
   draw_circles();
   calculate_proximity_and_draw_all_lines(); 
   vertex_and_level = draw_menu_bar();
