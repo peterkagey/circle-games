@@ -104,7 +104,11 @@ function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow(
 
 function update_state(a,b){
   i = index(a,b);
-  label[i] = (label[i] + max_vertex) % (max_vertex+1);
+  if (label[i] > 0){
+    label[i]--;
+  }else{
+    label[i] = max_vertex;
+  }
 }
 
 function color_based_on_state(a, b){
@@ -303,7 +307,6 @@ function calculate_proximity_and_draw_all_lines(){
     }
   }
 }
-
 
 function draw_menu_bar(){
   var prox_score = largest_full_submatrix(game_matrix);
