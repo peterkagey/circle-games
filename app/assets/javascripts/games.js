@@ -255,6 +255,20 @@ function largest_full_submatrix(matrix){
   return matrix.length
 }
 
+function alec_score_string(matrix){
+  var alec_string = "";
+  for (i = 0; i < matrix.length; i++){
+    alec_string = alec_string + (i+1) + ":";
+    for (j = 0; j <= i; j++){
+      if(matrix[i][j] == 0){
+        alec_string = alec_string + " " + (j+1)
+      }
+    } 
+    alec_string = alec_string + "\n";
+  }
+  return alec_string
+}
+
 function compare_right_and_down_and_draw(a,b){
   ab_state = label[index(a,b)];
   i_touches_j(ab_state, ab_state, game_matrix);
@@ -272,13 +286,11 @@ function compare_right_and_down_and_draw(a,b){
   }
 
   if (ab_state > 0 && right_state > 0 && ab_state != right_state){
-    console.log("right")
     i_touches_j(ab_state,right_state,game_matrix);
     draw_line(a, b, a+1, b);
   }
 
   if (ab_state > 0 && down_state > 0 && ab_state != down_state){
-    console.log("down")
     i_touches_j(ab_state, down_state, game_matrix);
     draw_line(a, b, a, b+1);
   }
@@ -311,6 +323,7 @@ function set_rails_values(ver, lev, lab){
   document.getElementById("game_max_a").value = max_a;
   document.getElementById("game_max_b").value = max_b;
   document.getElementById("game_solution").value = lab;
+  document.getElementById("alec_notes").value = alec_score_string(game_matrix);
 }
 
 function click_function(){

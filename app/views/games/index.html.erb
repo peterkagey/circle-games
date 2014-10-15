@@ -19,6 +19,7 @@
 		<%= f.hidden_field :max_a, size:1 %>
 		<%= f.hidden_field :max_b, size:1 %>
 		<%= f.hidden_field :solution, size:30 %>
+		<%= text_area(:alec, :notes, cols: 40, rows: 15) %>
 		<%#= f.submit %>
 	<% end %>
 	<%= javascript_include_tag 'games' %>

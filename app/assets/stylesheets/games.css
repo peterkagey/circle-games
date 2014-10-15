@@ -39,6 +39,12 @@ ul{
 	padding-left:20px;
 }
 
+#alec_notes{
+	background-color: #222222;
+	padding: 15px;
+	color:#ffffff;
+}
+
 .protector{
 	background-color:#222222; 
 	left:0;

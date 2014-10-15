@@ -2,7 +2,7 @@ class Game < ActiveRecord::Base
 	
  before_validation :simp_sol
  validates :solution, uniqueness: true
-# attr_accessor :max_a, :max_b
+ attr_accessor :alec
 
   def simplify_solution(solution_string, max_a, max_b)
     solution_ary = solution_string.split(",").map(&:to_i)
