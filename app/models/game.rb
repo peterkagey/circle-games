@@ -20,7 +20,7 @@ class Game < ActiveRecord::Base
     rows_removed.transpose.each{|s| s.sum != 0 ? columns_removed << s : a -= 1}
     solution_string = columns_removed.transpose.flatten.join(",") 
     if solution_string.blank?
-      a = 0; b = 0; start_a = 0; start_b = 0
+      a = 1; b = 1; start_a = 0; start_b = 0
     end
     { 
       :solution => solution_string, 

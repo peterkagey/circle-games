@@ -123,3 +123,5 @@ lh{
 	font-variant: small-caps;
 	font-size: 2em;
 }
+
+textarea{width:calc(100% - 30px);}

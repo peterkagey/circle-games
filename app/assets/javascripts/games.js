@@ -339,6 +339,21 @@ function calculate_proximity_and_draw_all_lines(){ // FIXME : split up to draw m
   }
 }
 
+function set_initial_positions(solution_string, a_shift, b_shift, a_width, b_width){
+  // if a_width + a_shift > max_a do this or that
+  solution_list = solution_string.split(",");
+  console.log(solution_list)
+  var b_row = -1;
+  for (i = 0; i < solution_list.length; i++){
+    var a_pos = i % a_width;
+    console.log(a_pos)
+    if (a_pos == 0){
+      b_row++;
+    }
+    label[(b_row * max_a) + a_pos] = solution_list[i];
+  }
+}
+
 function draw_menu_bar(){
   var prox_score = largest_full_submatrix(game_matrix);
   var nov = number_of_vertices();
@@ -370,12 +385,14 @@ function click_function(){
   set_rails_values(vertex_and_level[0], vertex_and_level[1], label);
 }
 
-function initialize_everything(){
+function initialize_everything(solution_string, a_shift, b_shift, a_width, b_width){
   initialize_atox_and_btoy();
   intialize_labels();
+  set_initial_positions(solution_string, a_shift, b_shift, a_width, b_width);
   draw_circles(); // draws circles
   game_matrix = reset_game_matrix();
+  calculate_proximity_and_draw_all_lines();
   vertex_and_level = draw_menu_bar();
-  set_rails_values(vertex_and_level[0], vertex_and_level[1], label);}
+  set_rails_values(vertex_and_level[0], vertex_and_level[1], label);
+}
 
-initialize_everything();
