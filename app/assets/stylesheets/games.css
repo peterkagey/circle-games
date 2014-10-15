@@ -109,7 +109,7 @@ ul{
 li{
 	width:120;
 	font-family: Courier;
-	white-space: pre;
+	white-space: pre-wrap;
 }
 
 lh{
