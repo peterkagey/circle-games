@@ -14,7 +14,7 @@ scrollCompensate = function () {
     outer.style.overflow = "hidden";
     outer.appendChild(inner);
 
-    document.body.appendChild(outer);
+    document.body.appendChild(outer); //Uncaught TypeError: Cannot read property 'appendChild' of null 
     var w1 = inner.offsetWidth;
     outer.style.overflow = 'scroll';
     var w2 = inner.offsetWidth;
@@ -50,14 +50,14 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
 
 //Canvas setup.
 if (window.innerWidth < 600){
-  max_a = 6; 
+  max_a = 6;
   max_b = 8;
 }else if(window.innerWidth < 1200){
-  max_a = 12; 
+  max_a = 12;
   max_b = 10;
 }else{
-  max_a = 18; 
-  max_b = 10;  
+  max_a = 18;
+  max_b = 10;
 }
 var canvas = document.getElementById("game_canvas");
 canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*max_a)
@@ -93,16 +93,12 @@ function reset_canvas(){
 function draw_circles(){
   for (b = 1; b < max_b ; b++){
     for (a = 0; a < max_a ; a++) {
-      color_based_on_state(label[index(a,b)], a, b);
+      color_based_on_state(a, b);
     }
   }
 }
 
-function print_string_at(text_string, a, b){
-  context.font = '20px Helvetica'; 
-  context.fillStyle = 'white';
-  context.textAlign = 'center';
-  context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));} // make sure penultimate number is same as context.font
+
 
 function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));}
 
@@ -111,19 +107,24 @@ function update_state(a,b){
   label[i] = (label[i] + max_vertex) % (max_vertex+1);
 }
 
-function color_based_on_state(state, a, b){
+function color_based_on_state(a, b){
+  if (b == 0){
+    state = "menu"
+  }else{
+    state = label[index(a,b)]
+  }
   context.beginPath();
   context.arc(atox[a], btoy[b], r, 0, 2 * 3.1415);
-  if (state == 0){
-    context.fillStyle = color2;
-    context.fill();
-    context.lineWidth = 4;
-    context.strokeStyle = color1;
-  }else if (state == "menu"){
+  if (state == "menu"){
     context.fillStyle = color4;
     context.fill();
     context.lineWidth = 2;
     context.strokeStyle = "white";
+  }else if (state == 0){
+    context.fillStyle = color2;
+    context.fill();
+    context.lineWidth = 4;
+    context.strokeStyle = color1;
   }else{
     context.fillStyle = color3;
     context.fill();
@@ -132,6 +133,17 @@ function color_based_on_state(state, a, b){
     print_string_at(state, a, b);
   }
   context.stroke();
+}
+
+function print_string_at(text_string, a, b){
+  context.font = '20px Helvetica';
+  context.fillStyle = 'white';
+  context.textAlign = 'center';
+  context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));} // make sure penultimate number is same as context.font
+
+function color_and_print_string_at(string, a, b){
+  color_based_on_state(a,b);
+  print_string_at(string, a, b);
 }
 
 function change_circle_on_click(){
@@ -160,7 +172,7 @@ function change_circle_on_click(){
       break;
     }
   }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){ 
+  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
     update_state(a,b);
     return;
   }
@@ -189,10 +201,14 @@ function draw_line(a1, b1, a2, b2){
     y1 = btoy[b1];
     y2 = btoy[b2];
   }
-  if (label[index(a1,b1)] != label[index(a2,b2)]){
-    context.moveTo(x1, y1);
-    context.lineTo(x2, y2);
-    context.lineWidth = 4;
+  context.moveTo(x1, y1);
+  context.lineTo(x2, y2);
+  context.lineWidth = 4;
+  
+  if(game_matrix[label[index(a1,b1)]-1][label[index(a2,b2)]-1] > 1){
+    console.log();
+    context.strokeStyle = 'red';
+  }else{
     context.strokeStyle = 'white';
   }
   context.stroke();
@@ -211,7 +227,7 @@ function max_label(){
 }
 
 function reset_game_matrix(){
-  n = max_label();
+  n = Math.max(max_label(), max_vertex);
   var matrix = [];
   for(i=0; i < n; i++) {
     matrix[i] = [];
@@ -223,8 +239,8 @@ function reset_game_matrix(){
 
 function i_touches_j(i, j, matrix){
   if (i==0 || j == 0){return}
-  matrix[i-1][j-1] = 1;
-  matrix[j-1][i-1] = 1;}
+  matrix[i-1][j-1]++;
+  matrix[j-1][i-1]++;}
 
 function largest_full_submatrix(matrix){
   for (n = 0; n < matrix.length+1; n++){
@@ -244,7 +260,7 @@ function compare_right_and_down_and_draw(a,b){
   i_touches_j(ab_state, ab_state, game_matrix);
 
   if(a == max_a && b == max_b){
-  return  
+  return
   }
 
   if(a != max_a){
@@ -255,14 +271,16 @@ function compare_right_and_down_and_draw(a,b){
   down_state = label[index(a,b+1)];
   }
 
-  if (ab_state > 0 && right_state > 0){
-    draw_line(a, b, a+1, b);
+  if (ab_state > 0 && right_state > 0 && ab_state != right_state){
+    console.log("right")
     i_touches_j(ab_state,right_state,game_matrix);
+    draw_line(a, b, a+1, b);
   }
 
-  if (ab_state > 0 && down_state > 0){
-    draw_line(a, b, a, b+1);
+  if (ab_state > 0 && down_state > 0 && ab_state != down_state){
+    console.log("down")
     i_touches_j(ab_state, down_state, game_matrix);
+    draw_line(a, b, a, b+1);
   }
 }
 
@@ -277,20 +295,13 @@ function calculate_proximity_and_draw_all_lines(){
 
 function draw_menu_bar(){
   var prox_score = largest_full_submatrix(game_matrix);
-  color_based_on_state("menu", 1, 0);
-  color_based_on_state("menu", 0, 0);
-  color_based_on_state("menu", max_a-3, 0);
-  color_based_on_state("menu", max_a-2, 0);
-  color_based_on_state("menu", max_a-1, 0);
-  color_based_on_state("menu", 2, 0);
-
   var nov = number_of_vertices();
-  print_string_at(nov, 0, 0);
-  print_string_at(prox_score, 1, 0);
-  print_string_at("\u2013", max_a-3, 0);
-  print_string_at(max_vertex, max_a-2, 0);
-  print_string_at("+", max_a-1, 0);
-  print_string_at("S", 2, 0);
+  color_and_print_string_at(nov, 0, 0);
+  color_and_print_string_at(prox_score, 1, 0);
+  color_and_print_string_at("\u2013", max_a-3, 0);
+  color_and_print_string_at(max_vertex, max_a-2, 0);
+  color_and_print_string_at("+", max_a-1, 0);
+  color_and_print_string_at("S", 2, 0);
   return [nov, prox_score]
 }
 
@@ -298,7 +309,7 @@ function set_rails_values(ver, lev, lab){
   document.getElementById("game_vertices").value = ver;
   document.getElementById("game_level").value = lev;
   document.getElementById("game_max_a").value = max_a;
-  document.getElementById("game_solution").value = lab;  
+  document.getElementById("game_solution").value = lab;
 }
 
 function click_function(){
@@ -306,7 +317,7 @@ function click_function(){
   reset_canvas();
   game_matrix = reset_game_matrix();
   draw_circles();
-  calculate_proximity_and_draw_all_lines(); 
+  calculate_proximity_and_draw_all_lines();
   vertex_and_level = draw_menu_bar();
   set_rails_values(vertex_and_level[0], vertex_and_level[1], label);
 }
