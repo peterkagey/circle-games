@@ -98,8 +98,6 @@ function draw_circles(){
   }
 }
 
-
-
 function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));}
 
 function update_state(a,b){
@@ -273,7 +271,7 @@ function alec_score_string(matrix){
   return alec_string
 }
 
-function compare_right_and_down_and_draw(a,b){
+function compare_right_and_down_and_update(a,b){
   ab_state = label[index(a,b)];
   i_touches_j(ab_state, ab_state, game_matrix);
 
@@ -291,16 +289,44 @@ function compare_right_and_down_and_draw(a,b){
 
   if (ab_state > 0 && right_state > 0 && ab_state != right_state){
     i_touches_j(ab_state,right_state,game_matrix);
-    draw_line(a, b, a+1, b);
   }
 
   if (ab_state > 0 && down_state > 0 && ab_state != down_state){
     i_touches_j(ab_state, down_state, game_matrix);
+  }
+}
+
+function compare_right_and_down_and_draw(a,b){
+  ab_state = label[index(a,b)];
+  i_touches_j(ab_state, ab_state, game_matrix);
+
+  if(a == max_a && b == max_b){
+  return
+  }
+
+  if(a != max_a){
+  right_state = label[index(a+1,b)];
+  }
+
+  if(b != max_b){
+  down_state = label[index(a,b+1)];
+  }
+
+  if (ab_state > 0 && right_state > 0 && ab_state != right_state){
+    draw_line(a, b, a+1, b);
+  }
+
+  if (ab_state > 0 && down_state > 0 && ab_state != down_state){
     draw_line(a, b, a, b+1);
   }
 }
 
-function calculate_proximity_and_draw_all_lines(){
+function calculate_proximity_and_draw_all_lines(){ // FIXME : split up to draw more red lines; inefficient.
+  for (b = 1; b < max_b ; b++){
+    for (a = 0; a < max_a ; a++){
+      compare_right_and_down_and_update(a,b);
+    }
+  }
   for (b = 1; b < max_b ; b++){
     for (a = 0; a < max_a ; a++){
       compare_right_and_down_and_draw(a,b);
