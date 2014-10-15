@@ -30,7 +30,8 @@
 		<% highest_level = Game.all.order(:level).last.level %>
 		<% for i in (lowest_level..highest_level)%>
 			<% best_game = Game.where(level:i).order(:vertices).first.try(:vertices) %>
-			<% bound = a123663.collect{|k| k < i*(i-1)/2 ? 1 : 0}.sum %> 
+			<% bound = a123663.collect{|k| k < i*(i-1)/2 ? 1 : 0}.sum %>
+			<% bound += 1 unless i==0 %>
 			<%= "<li> #{bound} ≤ f(#{i}) ≤ #{best_game} </li>".html_safe if best_game %>
 		<% end %>
 	</ul>
