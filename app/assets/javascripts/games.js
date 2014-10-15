@@ -257,13 +257,18 @@ function largest_full_submatrix(matrix){
   return matrix.length
 }
 
+function fix_s(string, length){return ("     " + string).slice(-length);}
+
 function alec_score_string(matrix){
   var alec_string = "";
+  var len = matrix.length.toString().length
   for (i = 0; i < matrix.length; i++){
-    alec_string = alec_string + (i+1) + ":";
-    for (j = 0; j <= i; j++){
+    alec_string = alec_string + fix_s((i+1),len) + ":";
+    for (j = 0; j <= matrix.length; j++){
       if(matrix[i][j] == 0){
-        alec_string = alec_string + " " + (j+1)
+        alec_string = alec_string + " " + fix_s((j+1),len)
+      }else{
+        alec_string = alec_string + " " + fix_s("", len)
       }
     } 
     alec_string = alec_string + "\n";
