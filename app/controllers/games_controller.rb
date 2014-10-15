@@ -9,4 +9,8 @@ class GamesController < ApplicationController
 		redirect_to games_path
 	end
 
+	def show #FIXME, confirm score
+		@game = Game.find(params[:id])
+	end	
+
 end

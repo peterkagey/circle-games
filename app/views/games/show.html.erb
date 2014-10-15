@@ -13,6 +13,8 @@
  -->
 <div class = "left_paragraph">
 	<canvas id="game_canvas" onclick = "click_function()"></canvas>
+	<%= javascript_include_tag 'games' %>
+	<%= "<script>initialize_everything('#{@game.solution}', 0, 0, #{@game.max_a.blank? ? 1 : @game.max_a}, 0);</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
 	<%= form_for @game do |f| %>
 		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
 		<%= f.hidden_field :level, size:1 %>
@@ -22,9 +24,6 @@
 		<%= text_area(:alec, :notes, rows: 15) %>
 		<%#= f.submit %>
 	<% end %>
-	<%= javascript_include_tag 'games' %>
-	<%= "<script>initialize_everything('#{@game.solution}', 0, 0, #{@game.max_a.blank? ? 1 : @game.max_a}, 0);</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
-
 </div>
 <div class = "right_paragraph">
 	<ul plain>
