@@ -5,7 +5,8 @@ class GamesController < ApplicationController
 	end
 
 	def create #FIXME, confirm score
-		Game.create(params.require(:game).permit(:vertices, :level, :solution, :max_a))
+		Game.create(params.require(:game).permit(:vertices, :level, :solution, :max_a, :max_b))
 		redirect_to games_path
 	end
+
 end

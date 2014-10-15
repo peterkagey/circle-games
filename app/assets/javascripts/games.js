@@ -309,6 +309,7 @@ function set_rails_values(ver, lev, lab){
   document.getElementById("game_vertices").value = ver;
   document.getElementById("game_level").value = lev;
   document.getElementById("game_max_a").value = max_a;
+  document.getElementById("game_max_b").value = max_b;
   document.getElementById("game_solution").value = lab;
 }
 
