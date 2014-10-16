@@ -1,11 +1,12 @@
 class Game < ActiveRecord::Base
-	
+
  before_validation :simp_sol
  attr_accessor :alec
 
-  def simplify_solution(solution_string, max_a, max_b)
+  def simplify_solution(solution_string, max_a, max_b, sa, sb) # fix start_a and start_b when updating
     solution_ary = solution_string.split(",").map(&:to_i)
-    start_a = 0; start_b = 0
+    start_a = sa.blank? ? 0 : sa.to_i; 
+    start_b = sb.blank? ? 0 : sb.to_i;
     a = max_a; b = max_b - 1
     rows_removed = []; columns_removed = []
 
@@ -31,7 +32,7 @@ class Game < ActiveRecord::Base
   end
 
   def simp_sol
-    update = simplify_solution(self.solution, self.max_a.to_i, self.max_b.to_i)
+    update = simplify_solution(self.solution, self.max_a.to_i, self.max_b.to_i, self.start_a, self.start_b)
     self.solution = update[:solution]
     self.max_a = update[:new_a]
     self.max_b = update[:new_b]
