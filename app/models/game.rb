@@ -1,7 +1,6 @@
 class Game < ActiveRecord::Base
 	
  before_validation :simp_sol
- validates :solution, uniqueness: true
  attr_accessor :alec
 
   def simplify_solution(solution_string, max_a, max_b)
@@ -40,7 +39,7 @@ class Game < ActiveRecord::Base
     self.start_b = update[:start_b]
   end
 
-  def string_to_text(string, a_width)
+  def self.string_to_text(string, a_width)
     ary = string.split(",")
     max_string_length = ary.map{|x| x.length}.max
     m = "%#{max_string_length}.#{max_string_length}s"
@@ -50,4 +49,5 @@ class Game < ActiveRecord::Base
     end
     new_string
   end
+
 end

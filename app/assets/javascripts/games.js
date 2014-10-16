@@ -182,7 +182,7 @@ function change_circle_on_click(){
 
 function number_of_vertices(){
   var count = 0;
-  for (var i = 0; i < max_a*(max_b-1); i++) {
+  for (i = 0; i < max_a*(max_b-1); i++) {
     if (label[i] != 0){
       count++;
     }
@@ -208,7 +208,6 @@ function draw_line(a1, b1, a2, b2){
   context.lineWidth = 4;
   
   if(game_matrix[label[index(a1,b1)]-1][label[index(a2,b2)]-1] > 1){
-    console.log();
     context.strokeStyle = 'red';
   }else{
     context.strokeStyle = 'white';
@@ -221,7 +220,7 @@ function index(a,b){return max_a*(b-1) + a}
 function max_label(){
   var max_l = 0
   for (i = 0; i < label.length; i++){
-    if (label[i] > max_l){
+    if (parseInt(label[i]) > max_l){
       max_l = label[i];
     }
   }
@@ -278,55 +277,39 @@ function alec_score_string(matrix){
 
 function compare_right_and_down_and_update(a,b){
   ab_state = label[index(a,b)];
-  i_touches_j(ab_state, ab_state, game_matrix);
 
-  if(a == max_a && b == max_b){
+  if(ab_state == 0){
   return
   }
 
-  if(a != max_a){
-  right_state = label[index(a+1,b)];
+  i_touches_j(ab_state, ab_state, game_matrix);
+
+  if(a != max_a && label[index(a+1,b)] > 0 && label[index(a+1,b)] != ab_state){
+    i_touches_j(ab_state, label[index(a+1,b)], game_matrix);
   }
 
-  if(b != max_b){
-  down_state = label[index(a,b+1)];
-  }
-
-  if (ab_state > 0 && right_state > 0 && ab_state != right_state){
-    i_touches_j(ab_state,right_state,game_matrix);
-  }
-
-  if (ab_state > 0 && down_state > 0 && ab_state != down_state){
-    i_touches_j(ab_state, down_state, game_matrix);
+  if(b != max_b && label[index(a,b+1)] > 0 && label[index(a,b+1)] != ab_state){
+    i_touches_j(ab_state, label[index(a,b+1)], game_matrix);
   }
 }
 
 function compare_right_and_down_and_draw(a,b){
   ab_state = label[index(a,b)];
-  i_touches_j(ab_state, ab_state, game_matrix);
 
-  if(a == max_a && b == max_b){
+  if(ab_state == 0){
   return
   }
 
-  if(a != max_a){
-  right_state = label[index(a+1,b)];
-  }
-
-  if(b != max_b){
-  down_state = label[index(a,b+1)];
-  }
-
-  if (ab_state > 0 && right_state > 0 && ab_state != right_state){
+  if(a != max_a && label[index(a+1,b)] > 0 && label[index(a+1,b)] != ab_state){
     draw_line(a, b, a+1, b);
   }
 
-  if (ab_state > 0 && down_state > 0 && ab_state != down_state){
+  if(b != max_b && label[index(a,b+1)] > 0 && label[index(a,b+1)] != ab_state){
     draw_line(a, b, a, b+1);
   }
 }
 
-function calculate_proximity_and_draw_all_lines(){ // FIXME : split up to draw more red lines; inefficient.
+function calculate_proximity_and_draw_all_lines(){ // FIXME : this was split up to draw more red lines; inefficient.
   for (b = 1; b < max_b ; b++){
     for (a = 0; a < max_a ; a++){
       compare_right_and_down_and_update(a,b);
@@ -342,12 +325,10 @@ function calculate_proximity_and_draw_all_lines(){ // FIXME : split up to draw m
 function set_initial_positions(solution_string, a_shift, b_shift, a_width, b_width){
   // if a_width + a_shift > max_a do this or that
   solution_list = solution_string.split(",");
-  console.log(solution_list)
-  var b_row = -1;
+  var b_row = b_shift-1;
   for (i = 0; i < solution_list.length; i++){
-    var a_pos = i % a_width;
-    console.log(a_pos)
-    if (a_pos == 0){
+    var a_pos = (i % a_width) + a_shift;
+    if (a_pos == a_shift){
       b_row++;
     }
     label[(b_row * max_a) + a_pos] = solution_list[i];

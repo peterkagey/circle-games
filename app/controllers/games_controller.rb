@@ -5,8 +5,13 @@ class GamesController < ApplicationController
 	end
 
 	def create #FIXME, confirm score
-		Game.create(params.require(:game).permit(:vertices, :level, :solution, :max_a, :max_b))
-		redirect_to games_path
+		@game = Game.new(params.require(:game).permit(:vertices, :level, :solution, :max_a, :max_b, :start_a, :start_b))
+		if @game.save
+			redirect_to(@game)
+		else
+			g2 = Game.where(solution:@game.solution, max_a:@game.max_a).first
+			redirect_to(g2)
+		end
 	end
 
 	def show #FIXME, confirm score
