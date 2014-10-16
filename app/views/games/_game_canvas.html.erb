@@ -1,0 +1,21 @@
+<div class = "left_paragraph">
+	Potentially fragile! Make window as big as possible when loading old scores.
+	<canvas id="game_canvas" onclick = "click_function()"></canvas>
+ 	<%= form_for Game.new do |f| %>
+		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
+		<%= f.hidden_field :level, size:1 %>
+		<%= f.hidden_field :max_a, size:1 %>
+		<%= f.hidden_field :max_b, size:1 %>
+		<%= f.hidden_field :solution, size:30 %>
+		<%= text_area(:alec, :notes, rows: 15) %>
+		<%#= f.submit %>
+	<% end %>
+	<%= javascript_include_tag 'games' %>
+	<% sol = params[:id].blank? || Game.find(params[:id]).blank? ? "" : Game.find(params[:id]).solution || ""%>
+	<% a_wid = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).max_a || 0%>
+	<% a_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_a || 0%>
+	<% b_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_b || 0%>
+	
+	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, 0);</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
+
+</div>

@@ -15,7 +15,7 @@ class GamesController < ApplicationController
 	end
 
 	def show #FIXME, confirm score
-		@game = Game.find(params[:id])
+		@game = params[:id].nil? ? Game.new : Game.find(params[:id])
 	end	
 
 end
