@@ -325,13 +325,13 @@ function calculate_proximity_and_draw_all_lines(){ // FIXME : this was split up 
 function set_initial_positions(solution_string, a_shift, b_shift, a_width, b_width){
   // if a_width + a_shift > max_a do this or that
   solution_list = solution_string.split(",");
-  var b_row = b_shift-1;
+  var b_row = b_shift;
   for (i = 0; i < solution_list.length; i++){
     var a_pos = (i % a_width) + a_shift;
     if (a_pos == a_shift){
       b_row++;
     }
-    label[(b_row * max_a) + a_pos] = solution_list[i];
+    label[index(a_pos, b_row)] = solution_list[i];
   }
 }
 

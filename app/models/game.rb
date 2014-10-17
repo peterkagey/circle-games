@@ -5,20 +5,20 @@ class Game < ActiveRecord::Base
 
   def simplify_solution(solution_string, max_a, max_b, sa, sb) # fix start_a and start_b when updating
     solution_ary = solution_string.split(",").map(&:to_i)
-    start_a = sa.blank? ? 0 : sa.to_i; 
-    start_b = sb.blank? ? 0 : sb.to_i;
-    a = max_a; b = max_b - 1
+    a = max_a.to_i; b = max_b.to_i
     rows_removed = []; columns_removed = []
 
     for i in (0...solution_ary.length)
-      start_a = i % max_a.to_i
-      start_b = i / max_b.to_i
+      start_a = i % a
+      start_b = i / a
       break if solution_ary[i] > 0
     end
 
-    solution_ary.each_slice(max_a){|s| s.sum != 0 ? rows_removed << s : b -= 1}
+    solution_ary.each_slice(a){|s| s.sum != 0 ? rows_removed << s : b -= 1}
     rows_removed.transpose.each{|s| s.sum != 0 ? columns_removed << s : a -= 1}
-    solution_string = columns_removed.transpose.flatten.join(",") 
+    solution_ary = columns_removed.transpose.flatten
+    solution_ary.each{|e| e == 0 ? start_a -= 1 : break}
+    solution_string = solution_ary.join(",")
     if solution_string.blank?
       a = 1; b = 1; start_a = 0; start_b = 0
     end
@@ -26,8 +26,8 @@ class Game < ActiveRecord::Base
       :solution => solution_string, 
       :new_a => a, 
       :new_b => b, 
-      :start_a => start_a, 
-      :start_b => start_b
+      :start_a => sa.blank? ? start_a : sa.to_i, 
+      :start_b => sb.blank? ? start_b : sb.to_i
     }
   end
 
