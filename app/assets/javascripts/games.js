@@ -332,8 +332,8 @@ function set_initial_positions(solution_string){
 }
 
 function draw_menu_bar(){
-  score = largest_full_submatrix(game_matrix);
-  level = number_of_vertices();
+  level = largest_full_submatrix(game_matrix);
+  score = number_of_vertices();
   color_and_print_string_at(level, 0, 0);
   color_and_print_string_at(score, 1, 0);
   color_and_print_string_at("\u2013", a_width-3, 0);
