@@ -8,7 +8,7 @@
 			<% best_game = Game.where(level:i).order(:vertices).first.try(:vertices) %>
 			<% bound = a123663.collect{|k| (k < i*(i-1)/2 && i>0) ? 1 : 0}.sum %>
 			<% bound += 1 if i != 0 %>
-			<%= ("<li>" + "%3.3s" % "#{bound}" + " ≤ " +  "%5.5s" % "f(#{i})" + " ≤ " + "%-3.5s" % "#{best_game}" + "</li>").html_safe if best_game %>
+			<% if best_game %><li><%= "<a href = 'http://pure-dusk-6882.herokuapp.com/games/#{i}/level_solution'>".html_safe %><%= ("%3.3s" % "#{bound}" + " ≤ " +  "%5.5s" % "f(#{i})" + " ≤ " + "%-3.5s" % "#{best_game}").html_safe%></a></li><% end %>
 		<% end %>
 	</ul>
 </div>

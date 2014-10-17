@@ -1,0 +1,1 @@
+<% @games.each do |g| %><pre>--------------------------------------------------------------------<br><b><%= "id: #{g.id}" -%></b><%= "<a class = 'no_whitespace' href = 'http://pure-dusk-6882.herokuapp.com/games/#{g.id}'>".html_safe %><%= "\n\n" + Game.string_to_text(g.solution, g.max_a) -%></a></pre><% end %>

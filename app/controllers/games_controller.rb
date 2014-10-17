@@ -18,4 +18,10 @@ class GamesController < ApplicationController
 		@game = params[:id].nil? ? Game.new : Game.find(params[:id])
 	end	
 
+	def level_solution
+		@games = params[:game_id].nil? ? "Game.all" : Game.where(level:params[:game_id])
+		# @games = params[:game_id].nil? ? "Game.all" : "foobar"
+
+	end
+
 end

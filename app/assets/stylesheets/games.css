@@ -6,6 +6,10 @@
 	border:0px;
 }
 
+a{
+	text-decoration: none;
+}
+
 canvas{
 	background-color: #444444;
 	-moz-user-select 	: none;
@@ -45,6 +49,20 @@ ul{
 	padding: 15px;
 	color:#ffffff;
 }
+
+pre{
+	padding-left:100px;
+	font-family: Courier;
+	text-indent: 0;
+}
+
+.no_whitespace{
+	text-decoration: none;
+	padding-left:100px;
+	font-family: Courier;
+	text-indent: 0;
+}
+
 
 .protector{
 	background-color:#222222; 
@@ -114,6 +132,7 @@ ul{
 }
 
 li{
+	text-align: left;
 	width:120;
 	font-family: Courier;
 	white-space: pre-wrap;
