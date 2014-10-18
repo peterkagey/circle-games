@@ -400,9 +400,11 @@ canvas.onclick = function() {
 
   if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
     max_vertex--;
+    click_function();
     return false;
   }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r){
     max_vertex++;
+    click_function();
     return false;
   }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
     document.getElementById("new_game").submit();
