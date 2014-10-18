@@ -146,38 +146,6 @@ function color_and_print_string_at(string, a, b){
   print_string_at(string, a, b);
 }
 
-function change_circle_on_click(){
-  coords = canvas.relMouseCoords(event);
-  canvasX = coords.x;
-  canvasY = coords.y;
-  if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
-    max_vertex--;
-    return;
-  }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r){
-    max_vertex++;
-    return;
-  }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
-    document.getElementById("new_game").submit();
-  }
-
-  for (i = 0; i < a_width; i++){
-    if (Math.abs(atox[i]-canvasX) < r){
-      a = i;
-      break;
-    }
-  }
-  for (j = 0; j < b_height; j++){
-    if (Math.abs(btoy[j]-canvasY) < r){
-      b = j;
-      break;
-    }
-  }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    update_state(a,b);
-    return;
-  }
-}
-
 function number_of_vertices(){
   var count = 0;
   for (i = 0; i < a_width*(b_height-1); i++) {
@@ -352,7 +320,6 @@ function set_rails_values(){
 }
 
 function click_function(){
-  change_circle_on_click();
   reset_canvas();
   reset_game_matrix();
   draw_circles();
@@ -397,4 +364,68 @@ function set_size(){
   canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
   canvas.height = (b_height * canvas.width) / a_width;
   r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+}
+
+canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
+  var coords = canvas.relMouseCoords(event);
+  var canvasX = coords.x;
+  var canvasY = coords.y;
+
+  for (i = 0; i < a_width; i++){
+    if (Math.abs(atox[i]-canvasX) < r){
+      a = i;
+      break;
+    }
+  }
+  for (j = 0; j < b_height; j++){
+    if (Math.abs(btoy[j]-canvasY) < r){
+      b = j;
+      break;
+    }
+  }
+  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+    label[index(a,b)] = 0;
+    click_function();
+    return false;
+  }
+  // click_function();
+  click_function();
+  return false;
+}
+
+canvas.onclick = function() {
+  var coords = canvas.relMouseCoords(event);
+  var canvasX = coords.x;
+  var canvasY = coords.y;
+
+  if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
+    max_vertex--;
+    return false;
+  }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r){
+    max_vertex++;
+    return false;
+  }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
+    document.getElementById("new_game").submit();
+  }
+
+  for (i = 0; i < a_width; i++){
+    if (Math.abs(atox[i]-canvasX) < r){
+      a = i;
+      break;
+    }
+  }
+  for (j = 0; j < b_height; j++){
+    if (Math.abs(btoy[j]-canvasY) < r){
+      b = j;
+      break;
+    }
+  }
+  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+    update_state(a,b);
+    click_function();
+    return false;
+  }
+  // click_function();
+  click_function();
+  return false;
 }

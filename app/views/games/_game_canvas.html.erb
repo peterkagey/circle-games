@@ -1,5 +1,7 @@
 <div class = "canvas">
-	<canvas id="game_canvas" onclick = "click_function()"></canvas>
+	<canvas id="game_canvas"></canvas>
+	<br>If f(5) = 9, f(6) = 12, and f(8) = 20, then this is either A076271 or a new OEIS sequence.
+
  	<%= form_for Game.new do |f| %>
 		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
 		<%= f.hidden_field :level, size:1 %>

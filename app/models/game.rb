@@ -51,4 +51,20 @@ class Game < ActiveRecord::Base
     new_string
   end
 
+  def self.peteys_little_special_function(n)
+    seq = [0]
+    k = a = 0
+    (1..n).to_a.each do |i| 
+      2.times do
+        k.times do 
+          a+=2
+          seq << a
+        end
+        a += 1
+        seq << a
+      end
+      k += 1
+    end
+    return seq
+  end
 end
