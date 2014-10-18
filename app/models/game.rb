@@ -1,7 +1,24 @@
 class Game < ActiveRecord::Base
 
- before_validation :simp_sol
- attr_accessor :alec
+  belongs_to :high_score
+  before_save :simp_sol
+  after_save :update_high_score
+  attr_accessor :alec
+
+  def high_score
+    begin
+      HighScore.find(level)
+    rescue ActiveRecord::RecordNotFound
+      HighScore.create(id:level, level:level)
+    end
+  end
+
+  def update_high_score
+    hs = high_score
+    if hs.best_score.nil? || self.vertices <= hs.best_score
+      hs.update(best_score: self.vertices, best_game_id: self.id, level: self.level)
+    end
+  end
 
   def simplify_solution(solution_string, max_a, max_b, sa, sb) # fix start_a and start_b when updating
     solution_ary = solution_string.split(",").map(&:to_i)
