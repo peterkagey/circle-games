@@ -249,10 +249,11 @@ function compare_right_and_down_and_update(a,b){
   return
   }
   i_touches_j(ab_state, ab_state, game_matrix);
-  if(a != a_width && label[index(a+1,b)] > 0 && label[index(a+1,b)] != ab_state){
+
+  if(a != a_width - 1 && label[index(a+1,b)] > 0 && label[index(a+1,b)] != ab_state){
     i_touches_j(ab_state, label[index(a+1,b)], game_matrix);
   }
-  if(b != b_height && label[index(a,b+1)] > 0 && label[index(a,b+1)] != ab_state){
+  if(b != b_height - 1 && label[index(a,b+1)] > 0 && label[index(a,b+1)] != ab_state){
     i_touches_j(ab_state, label[index(a,b+1)], game_matrix);
   }
 }
@@ -262,10 +263,10 @@ function compare_right_and_down_and_draw(a,b){
   if(ab_state == 0){
   return
   }
-  if(a != a_width && label[index(a+1,b)] > 0 && label[index(a+1,b)] != ab_state){
+  if(a != a_width - 1 && label[index(a+1,b)] > 0 && label[index(a+1, b)] != ab_state){
     draw_line(a, b, a+1, b);
   }
-  if(b != b_height && label[index(a,b+1)] > 0 && label[index(a,b+1)] != ab_state){
+  if(b != b_height - 1 && label[index(a,b+1)] > 0 && label[index(a, b+1)] != ab_state){
     draw_line(a, b, a, b+1);
   }
 }
