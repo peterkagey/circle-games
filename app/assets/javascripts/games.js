@@ -309,6 +309,9 @@ function draw_menu_bar(){
   color_and_print_string_at(max_vertex, a_width-2, 0);
   color_and_print_string_at("+", a_width-1, 0);
   color_and_print_string_at("S", 2, 0);
+  if(a_width > 6){
+    color_and_print_string_at("N", 3, 0);
+  }
 }
 
 function set_rails_values(){
@@ -409,6 +412,11 @@ canvas.onclick = function() {
     return false;
   }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
     document.getElementById("new_game").submit();
+    return
+  }else if(a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
+    document.getElementById("new_game").submit();
+    window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path"
+    return
   }
 
   for (i = 0; i < a_width; i++){

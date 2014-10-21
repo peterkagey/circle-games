@@ -18,5 +18,14 @@
 	<% b_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_b || 0%>
 	
 	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, 0);</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
-
+</div>
+<div id = "instructions">
+	Here's how you play:<br>
+	Connect every number to every other number in as few circles as possible. <br>
+	Click on a link under "Best Solutions" for some examples. <br>
+	The circle in the left hand corner records the highest number that is fully connected. <br>
+	The circle to the right of that records how many circles are in play.<br>
+	The "S" button will allow you to submit your score and update the high-scores table.<br>
+	The circles in the right hand corner let you change how high you can select.<br>
+	Right clicking on a circle will remove it.
 </div>
