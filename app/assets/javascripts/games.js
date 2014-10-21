@@ -342,6 +342,7 @@ function initialize_everything(solution_string, ruby_a_shift, ruby_b_shift, ruby
   initialize_atox_and_btoy();
   intialize_labels(a_width, b_height);
   set_initial_positions(solution_string);
+  max_vertex = Math.max(max_label(), max_vertex);
   draw_circles(); // draws circles
   reset_game_matrix();
   calculate_proximity_and_draw_all_lines();
