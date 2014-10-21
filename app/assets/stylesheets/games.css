@@ -44,6 +44,13 @@ li{
 	width 		 : 120;
 }
 
+li > a{
+	font-family  : Courier;
+	text-align 	 : left;
+	white-space  : pre-wrap;
+	width 		 : 120;
+}
+
 p{
 	margin 		 : 0;
 	padding 	 : 0;
@@ -53,9 +60,17 @@ p{
 }
 
 pre{
+	font-size 	 : 2em;
+	font-variant : small-caps;
 	font-family  : Courier;
 	padding-left : 100px;
 	text-indent  : 0;
+}
+
+pre > a{
+	font-family  : Courier;
+	padding-left : 100px;
+	text-indent  : 0;	
 }
 
 textarea{

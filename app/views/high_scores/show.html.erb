@@ -1,0 +1,5 @@
+<% @high_score.games.order(:vertices).each do |g| %>
+<hr style="background:#2c4d75; border:0; height:7px" /><br>
+<pre><b><%= ("Score: " + link_to(g.vertices, g)).html_safe -%></b><%= link_to "\n\n" + Game.string_to_text(g.solution, g.max_a), g %><br></pre>
+<% end %>
+<hr style="background:#2c4d75; border:0; height:7px" />

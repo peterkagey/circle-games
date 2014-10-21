@@ -7,7 +7,7 @@
 			<% bound = a123663.collect{|k| (k < i*(i-1)/2 && i>0) ? 1 : 0}.sum %>
 			<% bound += 1 unless i == 0 %>
 			<% bound = [bound, i*((i-1)/4.0).ceil].max %>
-			<li><%= "<a href = 'http://pure-dusk-6882.herokuapp.com/games/#{i}/level_solution'>".html_safe %><%= ("%3.3s" % "#{bound}" + " ≤ " +  "%5.5s" % "f(#{i})" + " ≤ " + "%-3.5s" % "#{hs.best_score}").html_safe%></a></li>
+			<%= content_tag :li, (link_to ("%3.3s" % "#{bound}" + " ≤ " + "f(#{i})" + " ≤ " + "%-3.5s" % "#{hs.best_score}").html_safe, hs) %>
 		<% end %>
 	</ul>
 </div>
