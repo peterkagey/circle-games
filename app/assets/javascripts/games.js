@@ -63,7 +63,7 @@ context.fillStyle = "#cccccc";
 var color1 = '#404040'; var color2 = '#444444'; var color3 = '#346a5b'; var color4 = '#2c4d75';
 
 
-var game_matrix; var label = [];
+var game_matrix; var labels = [];
 var atox = []; var btoy = [];
 var max_vertex = 3;
 var level; var score;
@@ -78,8 +78,8 @@ function initialize_atox_and_btoy(){
   }}
 
 function intialize_labels(a, b){
-  for (i = 0; i < a*(b); i++){
-    label[i] = 0;
+  for (i = 0; i < a*(b-1); i++){
+    labels[i] = 0;
   }
 }
 
@@ -99,10 +99,10 @@ function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow(
 
 function update_state(a,b){
   i = index(a,b);
-  if (label[i] > 0){
-    label[i]--;
+  if (labels[i] > 0){
+    labels[i]--;
   }else{
-    label[i] = max_vertex;
+    labels[i] = max_vertex;
   }
 }
 
@@ -111,7 +111,7 @@ function color_based_on_state(a, b){
   if (b == 0){
     state = "menu";
   }else{
-    state = label[index(a,b)];
+    state = labels[index(a,b)];
   }
   context.beginPath();
   context.arc(atox[a], btoy[b], r, 0, 2 * 3.1415);
@@ -149,7 +149,7 @@ function color_and_print_string_at(string, a, b){
 function number_of_vertices(){
   var count = 0;
   for (i = 0; i < a_width*(b_height-1); i++) {
-    if (label[i] != 0){
+    if (labels[i] != 0){
       count++;
     }
   }
@@ -174,7 +174,7 @@ function draw_line(a1, b1, a2, b2){
   context.lineTo(x2, y2);
   context.lineWidth = 4;
   
-  if(game_matrix[label[index(a1,b1)]-1][label[index(a2,b2)]-1] > 1){
+  if(game_matrix[labels[index(a1,b1)]-1][labels[index(a2,b2)]-1] > 1){
     context.strokeStyle = 'red';
   }else{
     context.strokeStyle = 'white';
@@ -186,9 +186,9 @@ function index(a,b){return a_width*(b-1) + a}
 
 function max_label(){
   var max_l = 0
-  for (i = 0; i < label.length; i++){
-    if (parseInt(label[i]) > max_l){
-      max_l = label[i];
+  for (i = 0; i < labels.length; i++){
+    if (parseInt(labels[i]) > max_l){
+      max_l = labels[i];
     }
   }
   return max_l
@@ -244,29 +244,29 @@ function set_alec_string(){
 }
 
 function compare_right_and_down_and_update(a,b){
-  var ab_state = label[index(a,b)];
+  var ab_state = labels[index(a,b)];
   if(ab_state == 0){
   return
   }
   i_touches_j(ab_state, ab_state, game_matrix);
 
-  if(a != a_width - 1 && label[index(a+1,b)] > 0 && label[index(a+1,b)] != ab_state){
-    i_touches_j(ab_state, label[index(a+1,b)], game_matrix);
+  if(a != a_width - 1 && labels[index(a+1,b)] > 0 && labels[index(a+1,b)] != ab_state){
+    i_touches_j(ab_state, labels[index(a+1,b)], game_matrix);
   }
-  if(b != b_height - 1 && label[index(a,b+1)] > 0 && label[index(a,b+1)] != ab_state){
-    i_touches_j(ab_state, label[index(a,b+1)], game_matrix);
+  if(b != b_height - 1 && labels[index(a,b+1)] > 0 && labels[index(a,b+1)] != ab_state){
+    i_touches_j(ab_state, labels[index(a,b+1)], game_matrix);
   }
 }
 
 function compare_right_and_down_and_draw(a,b){
-  ab_state = label[index(a,b)];
+  ab_state = labels[index(a,b)];
   if(ab_state == 0){
   return
   }
-  if(a != a_width - 1 && label[index(a+1,b)] > 0 && label[index(a+1, b)] != ab_state){
+  if(a != a_width - 1 && labels[index(a+1,b)] > 0 && labels[index(a+1, b)] != ab_state){
     draw_line(a, b, a+1, b);
   }
-  if(b != b_height - 1 && label[index(a,b+1)] > 0 && label[index(a, b+1)] != ab_state){
+  if(b != b_height - 1 && labels[index(a,b+1)] > 0 && labels[index(a, b+1)] != ab_state){
     draw_line(a, b, a, b+1);
   }
 }
@@ -285,7 +285,7 @@ function calculate_proximity_and_draw_all_lines(){ // FIXME : this was split up 
 }
 
 function set_initial_positions(solution_string){
-  console.log(ruby_a + a_shift, a_width); 
+  // console.log(ruby_a + a_shift, a_width); 
   if (ruby_a + a_shift > a_width){
     a_shift = a_width - ruby_a
   }; 
@@ -296,7 +296,7 @@ function set_initial_positions(solution_string){
     if (a_pos == a_shift){
       b_row++;
     }
-    label[index(a_pos, b_row)] = solution_list[i];
+    labels[index(a_pos, b_row)] = solution_list[i];
   }
 }
 
@@ -312,6 +312,9 @@ function draw_menu_bar(){
   if(a_width > 6){
     color_and_print_string_at("N", 3, 0);
   }
+  if(a_width > 7){
+    color_and_print_string_at("\u2192", 4, 0);
+  }
 }
 
 function set_rails_values(){
@@ -319,7 +322,7 @@ function set_rails_values(){
   document.getElementById("game_level").value     = level;
   document.getElementById("game_max_a").value     = a_width;
   document.getElementById("game_max_b").value     = b_height;
-  document.getElementById("game_solution").value  = label;
+  document.getElementById("game_solution").value  = labels;
   document.getElementById("alec_notes").value     = alec_string;
 }
 
@@ -351,6 +354,29 @@ function initialize_everything(solution_string, ruby_a_shift, ruby_b_shift, ruby
   set_rails_values();
 }
 
+function new_labels(){
+  for(i = 0; i < b_height-1; i++){
+    console.log(i*a_width);
+    labels.splice(i*a_width+a_width - 1, 0, 0);
+  }
+}
+
+function widen_canvas(){
+  a_width++;
+  canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
+  canvas.height = (b_height * canvas.width) / a_width;
+  r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+  initialize_atox_and_btoy();
+  new_labels();
+  max_vertex = Math.max(max_label(), max_vertex);
+  draw_circles(); // draws circles
+  reset_game_matrix();
+  calculate_proximity_and_draw_all_lines();
+  set_alec_string();
+  draw_menu_bar();
+  set_rails_values();
+}
+
 function set_size(){
   if (window.innerWidth < 600){
     standard_a_width = 6;
@@ -371,33 +397,6 @@ function set_size(){
   r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
 }
 
-canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-  var coords = canvas.relMouseCoords(event);
-  var canvasX = coords.x;
-  var canvasY = coords.y;
-
-  for (i = 0; i < a_width; i++){
-    if (Math.abs(atox[i]-canvasX) < r){
-      a = i;
-      break;
-    }
-  }
-  for (j = 0; j < b_height; j++){
-    if (Math.abs(btoy[j]-canvasY) < r){
-      b = j;
-      break;
-    }
-  }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    label[index(a,b)] = 0;
-    click_function();
-    return false;
-  }
-  // click_function();
-  click_function();
-  return false;
-}
-
 canvas.onclick = function() {
   var coords = canvas.relMouseCoords(event);
   var canvasX = coords.x;
@@ -415,9 +414,12 @@ canvas.onclick = function() {
     document.getElementById("new_game").submit();
     return
   }else if(a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
-    document.getElementById("new_game").submit();
-    window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path"
+    document.getElementById("new_game").submit(); // seems broken.
+    window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path" solution.
     return
+  }else if(a_width > 7 && distance(canvasX, canvasY, atox[4], btoy[0]) < r){
+    widen_canvas();
+    return false;
   }
 
   for (i = 0; i < a_width; i++){
@@ -437,7 +439,30 @@ canvas.onclick = function() {
     click_function();
     return false;
   }
-  // click_function();
-  click_function();
+}
+
+
+canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
+  var coords = canvas.relMouseCoords(event);
+  var canvasX = coords.x;
+  var canvasY = coords.y;
+
+  for (i = 0; i < a_width; i++){
+    if (Math.abs(atox[i]-canvasX) < r){
+      a = i;
+      break;
+    }
+  }
+  for (j = 0; j < b_height; j++){
+    if (Math.abs(btoy[j]-canvasY) < r){
+      b = j;
+      break;
+    }
+  }
+  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+    labels[index(a,b)] = 0;
+    click_function();
+    return false;
+  }
   return false;
 }
