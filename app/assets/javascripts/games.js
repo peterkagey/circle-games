@@ -50,19 +50,15 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
 
 //////////////////////////////////////////////////////
 
-//Canvas setup.
-var standard_a_width; var standard_b_height;
-var a_width; var b_height;
-var ruby_a; var ruby_b;
 var canvas = document.getElementById("game_canvas");
-var r
-var a_shift; var b_shift;
-
 var context = canvas.getContext("2d");
-context.fillStyle = "#cccccc";
+// context.fillStyle = "red";
+var default_a_width; var default_b_height;
+var ruby_a; var ruby_b;
+var a_width; var b_height;
+var a_shift; var b_shift;
+var r
 var color1 = '#404040'; var color2 = '#444444'; var color3 = '#346a5b'; var color4 = '#2c4d75';
-
-
 var game_matrix; var labels = [];
 var atox = []; var btoy = [];
 var max_vertex = 3;
@@ -75,7 +71,8 @@ function initialize_atox_and_btoy(){
   }
   for (b = 0; b < b_height ; b++){
      btoy[b] = 0.5*canvas.height/b_height + b*canvas.height/b_height;
-  }}
+  }
+}
 
 function intialize_labels(a, b){
   for (i = 0; i < a*(b-1); i++){
@@ -87,7 +84,7 @@ function reset_canvas(){
   context.canvas.width = context.canvas.width;
 }
 
-function draw_circles(){
+function color_and_label_all_circles(){
   for (b = 1; b < b_height ; b++){
     for (a = 0; a < a_width ; a++) {
       color_based_on_state(a, b);
@@ -99,11 +96,7 @@ function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow(
 
 function update_state(a,b){
   i = index(a,b);
-  if (labels[i] > 0){
-    labels[i]--;
-  }else{
-    labels[i] = max_vertex;
-  }
+  (labels[i] > 0) ? labels[i]-- : labels[i] = max_vertex;
 }
 
 function color_based_on_state(a, b){
@@ -135,16 +128,17 @@ function color_based_on_state(a, b){
   context.stroke();
 }
 
+function color_and_print_string_at(string, a, b){
+  color_based_on_state(a,b);
+  print_string_at(string, a, b);
+}
+
 function print_string_at(text_string, a, b){
   context.font = '20px Helvetica';
   context.fillStyle = 'white';
   context.textAlign = 'center';
   context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));} // make sure penultimate number is same as context.font
 
-function color_and_print_string_at(string, a, b){
-  color_based_on_state(a,b);
-  print_string_at(string, a, b);
-}
 
 function number_of_vertices(){
   var count = 0;
@@ -313,8 +307,18 @@ function draw_menu_bar(){
     color_and_print_string_at("N", 3, 0);
   }
   if(a_width > 7){
-    color_and_print_string_at("\u2192", 4, 0);
+    color_and_print_string_at("\u2190", 4, 0)
   }
+  if(a_width > 8){
+    color_and_print_string_at("\u2192", 5, 0);
+  }
+  if(a_width > 9){
+    color_and_print_string_at("\u2191", 6, 0);
+  }
+  if(a_width > 10){
+    color_and_print_string_at("\u2193", 7, 0);
+  }
+
 }
 
 function set_rails_values(){
@@ -326,10 +330,10 @@ function set_rails_values(){
   document.getElementById("alec_notes").value     = alec_string;
 }
 
-function click_function(){
+function refresh_canvas(){
   reset_canvas();
   reset_game_matrix();
-  draw_circles();
+  color_and_label_all_circles();
   calculate_proximity_and_draw_all_lines();
   draw_menu_bar();
   set_alec_string();
@@ -346,12 +350,7 @@ function initialize_everything(solution_string, ruby_a_shift, ruby_b_shift, ruby
   intialize_labels(a_width, b_height);
   set_initial_positions(solution_string);
   max_vertex = Math.max(max_label(), max_vertex);
-  draw_circles(); // draws circles
-  reset_game_matrix();
-  calculate_proximity_and_draw_all_lines();
-  set_alec_string();
-  draw_menu_bar();
-  set_rails_values();
+  refresh_canvas();
 }
 
 function new_labels(){
@@ -369,7 +368,7 @@ function widen_canvas(){
   initialize_atox_and_btoy();
   new_labels();
   max_vertex = Math.max(max_label(), max_vertex);
-  draw_circles(); // draws circles
+  color_and_label_all_circles(); // draws circles
   reset_game_matrix();
   calculate_proximity_and_draw_all_lines();
   set_alec_string();
@@ -379,22 +378,63 @@ function widen_canvas(){
 
 function set_size(){
   if (window.innerWidth < 600){
-    standard_a_width = 6;
-    standard_b_height = 10;
+    default_a_width = 6;
+    default_b_height = 10;
   }else if(window.innerWidth < 1200){
-    standard_a_width = 12;
-    standard_b_height = 10;
+    default_a_width = 12;
+    default_b_height = 10;
   }else{
-    standard_a_width = 18;
-    standard_b_height = 10;
+    default_a_width = 18;
+    default_b_height = 10;
   }
   //assume that a is too big, and b is never too big
-  a_width = Math.max(ruby_a, standard_a_width);
+  a_width = Math.max(ruby_a, default_a_width);
   b_height = 10;
-  // b_height = Math.max(ruby_b, standard_b_height);
+  // b_height = Math.max(ruby_b, default_b_height);
   canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
   canvas.height = (b_height * canvas.width) / a_width;
   r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+}
+
+function move_everything(direction){
+  if (direction == "left"){
+    for(i = 0; i < labels.length/a_width; i++){
+      if(labels[i * a_width] != 0){
+        return false;
+      }
+    }
+    labels.splice(labels.length, 0, 0);
+    labels.shift();
+
+  }else if(direction == "right"){  
+    for(i = 0; i < labels.length/a_width; i++){
+      if(labels[i * a_width + a_width - 1] != 0){
+        return false;
+      }
+    }
+    labels.splice(0, 0, 0);
+    labels.pop();
+
+  } else if (direction == "up"){
+    for(i = 0; i < a_width; i++){
+      if(labels[i] != 0){
+        return false;
+      }
+    }
+    var top_row = labels.splice(0, a_width);
+    labels = labels.concat(top_row);
+
+  } else if (direction == "down"){
+    for(i = 0; i < a_width; i++){
+      if(labels[labels.length - 1 - i] != 0){
+        return false;
+      }
+    }
+    var bottom_row = labels.splice(labels.length-a_width, a_width);
+    labels = bottom_row.concat(labels);
+  } else {
+    return false;
+  }
 }
 
 canvas.onclick = function() {
@@ -404,11 +444,11 @@ canvas.onclick = function() {
 
   if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
     max_vertex--;
-    click_function();
+    refresh_canvas();
     return false;
   }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r){
     max_vertex++;
-    click_function();
+    refresh_canvas();
     return false;
   }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
     document.getElementById("new_game").submit();
@@ -418,7 +458,20 @@ canvas.onclick = function() {
     window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path" solution.
     return
   }else if(a_width > 7 && distance(canvasX, canvasY, atox[4], btoy[0]) < r){
-    widen_canvas();
+    move_everything("left");
+    refresh_canvas();
+    return false;
+  }else if(a_width > 8 && distance(canvasX, canvasY, atox[5], btoy[0]) < r){
+    move_everything("right");
+    refresh_canvas();
+    return false;
+  }else if(a_width > 9 && distance(canvasX, canvasY, atox[6], btoy[0]) < r){
+    move_everything("up");
+    refresh_canvas();
+    return false;
+  }else if(a_width > 10 && distance(canvasX, canvasY, atox[7], btoy[0]) < r){
+    move_everything("down");
+    refresh_canvas();
     return false;
   }
 
@@ -436,33 +489,33 @@ canvas.onclick = function() {
   }
   if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
     update_state(a,b);
-    click_function();
+    refresh_canvas();
     return false;
   }
 }
 
-
 canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-  var coords = canvas.relMouseCoords(event);
-  var canvasX = coords.x;
-  var canvasY = coords.y;
+  // var coords = canvas.relMouseCoords(event);
+  // var canvasX = coords.x;
+  // var canvasY = coords.y;
 
-  for (i = 0; i < a_width; i++){
-    if (Math.abs(atox[i]-canvasX) < r){
-      a = i;
-      break;
-    }
-  }
-  for (j = 0; j < b_height; j++){
-    if (Math.abs(btoy[j]-canvasY) < r){
-      b = j;
-      break;
-    }
-  }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    labels[index(a,b)] = 0;
-    click_function();
-    return false;
-  }
+  // for (i = 0; i < a_width; i++){
+  //   if (Math.abs(atox[i]-canvasX) < r){
+  //     a = i;
+  //     break;
+  //   }
+  // }
+  // for (j = 0; j < b_height; j++){
+  //   if (Math.abs(btoy[j]-canvasY) < r){
+  //     b = j;
+  //     break;
+  //   }
+  // }
+  // if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+  //   labels[index(a,b)] = 0;
+  //   refresh_canvas();
+  //   return false;
+  // }
+  widen_canvas();
   return false;
 }
