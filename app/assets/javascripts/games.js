@@ -128,16 +128,24 @@ function color_based_on_state(a, b){
   context.stroke();
 }
 
-function color_and_print_string_at(string, a, b){
-  color_based_on_state(a,b);
-  print_string_at(string, a, b);
-}
-
-function print_string_at(text_string, a, b){
+function print_string_at(text_string, a, b, flipstring){
   context.font = '20px Helvetica';
   context.fillStyle = 'white';
   context.textAlign = 'center';
-  context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));} // make sure penultimate number is same as context.font
+  if (flipstring == "flip"){
+  context.rotate(Math.PI/2);
+  context.fillText(text_string, btoy[b], -atox[a] + 20/(2.62));
+  context.rotate(-Math.PI/2);
+  }else{
+  context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));
+  }
+} // make sure penultimate number is same as context.font
+
+function color_and_print_string_at(string, a, b, flipstring){
+  color_based_on_state(a,b);
+  print_string_at(string, a, b, flipstring);
+}
+
 
 
 function number_of_vertices(){
@@ -294,33 +302,6 @@ function set_initial_positions(solution_string){
   }
 }
 
-function draw_menu_bar(){
-  level = largest_full_submatrix(game_matrix);
-  score = number_of_vertices();
-  color_and_print_string_at(level, 0, 0);
-  color_and_print_string_at(score, 1, 0);
-  color_and_print_string_at("\u2013", a_width-3, 0);
-  color_and_print_string_at(max_vertex, a_width-2, 0);
-  color_and_print_string_at("+", a_width-1, 0);
-  color_and_print_string_at("S", 2, 0);
-  if(a_width > 6){
-    color_and_print_string_at("N", 3, 0);
-  }
-  if(a_width > 7){
-    color_and_print_string_at("\u2190", 4, 0)
-  }
-  if(a_width > 8){
-    color_and_print_string_at("\u2192", 5, 0);
-  }
-  if(a_width > 9){
-    color_and_print_string_at("\u2191", 6, 0);
-  }
-  if(a_width > 10){
-    color_and_print_string_at("\u2193", 7, 0);
-  }
-
-}
-
 function set_rails_values(){
   document.getElementById("game_vertices").value  = score;
   document.getElementById("game_level").value     = level;
@@ -353,27 +334,52 @@ function initialize_everything(solution_string, ruby_a_shift, ruby_b_shift, ruby
   refresh_canvas();
 }
 
-function new_labels(){
-  for(i = 0; i < b_height-1; i++){
-    console.log(i*a_width);
-    labels.splice(i*a_width+a_width - 1, 0, 0);
+function resize_canvas(dimension){
+  if (dimension == "widen"){
+    a_width++;
+    canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
+    canvas.height = (b_height * canvas.width) / a_width;
+    r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+    initialize_atox_and_btoy();
+    for(i = 0; i < b_height-1; i++){
+      labels.splice(i*a_width+a_width - 1, 0, 0);
+    }
   }
-}
-
-function widen_canvas(){
-  a_width++;
-  canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
-  canvas.height = (b_height * canvas.width) / a_width;
-  r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
-  initialize_atox_and_btoy();
-  new_labels();
-  max_vertex = Math.max(max_label(), max_vertex);
-  color_and_label_all_circles(); // draws circles
-  reset_game_matrix();
-  calculate_proximity_and_draw_all_lines();
-  set_alec_string();
-  draw_menu_bar();
-  set_rails_values();
+  if (dimension == "heighten"){
+    b_height++;
+    canvas.height = (b_height * canvas.width) / a_width;
+    initialize_atox_and_btoy();
+    for(i = a_width*(b_height-2); i < a_width*(b_height-1); i++){
+      labels[i] = 0;
+    }
+  }
+  if (dimension == "narrow"){
+    for(i = 0; i < labels.length/a_width; i++){
+      if(labels[i * a_width + a_width - 1] != 0){
+        return false;
+      }
+    }
+    a_width--;
+    canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
+    canvas.height = (b_height * canvas.width) / a_width;
+    r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+    initialize_atox_and_btoy();
+    for(i = 1; i < b_height; i++){
+      // console.log(i);
+      labels.splice(i * a_width, 1)
+    }
+  }    
+  if (dimension == "shorten"){
+    for(i = 0; i < a_width; i++){
+      if(labels[labels.length - 1 - i] != 0){
+        return false;
+      }
+    }
+    b_height--;
+    canvas.height = (b_height * canvas.width) / a_width;
+    initialize_atox_and_btoy();
+    labels.splice(labels.length-a_width, a_width);
+  }
 }
 
 function set_size(){
@@ -473,6 +479,22 @@ canvas.onclick = function() {
     move_everything("down");
     refresh_canvas();
     return false;
+  }else if(a_width > 11 && distance(canvasX, canvasY, atox[8], btoy[0]) < r){
+    resize_canvas("widen");
+    refresh_canvas();
+    return false;
+  }else if(a_width > 12 && distance(canvasX, canvasY, atox[9], btoy[0]) < r){
+    resize_canvas("heighten");
+    refresh_canvas();
+    return false;
+  }else if(a_width > 13 && distance(canvasX, canvasY, atox[10], btoy[0]) < r){
+    resize_canvas("narrow");
+    refresh_canvas();
+    return false;
+  }else if(a_width > 14 && distance(canvasX, canvasY, atox[11], btoy[0]) < r){
+    resize_canvas("shorten");
+    refresh_canvas();
+    return false;
   }
 
   for (i = 0; i < a_width; i++){
@@ -494,28 +516,65 @@ canvas.onclick = function() {
   }
 }
 
-canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-  var coords = canvas.relMouseCoords(event);
-  var canvasX = coords.x;
-  var canvasY = coords.y;
+function draw_menu_bar(){
+  level = largest_full_submatrix(game_matrix);
+  score = number_of_vertices();
+  color_and_print_string_at(level, 0, 0);
+  color_and_print_string_at(score, 1, 0);
+  color_and_print_string_at("\u2013", a_width-3, 0);
+  color_and_print_string_at(max_vertex, a_width-2, 0);
+  color_and_print_string_at("+", a_width-1, 0);
+  color_and_print_string_at("S", 2, 0);
+  if(a_width > 6){
+    color_and_print_string_at("N", 3, 0);
+  }
+  if(a_width > 7){
+    color_and_print_string_at("\u2190", 4, 0)
+  }
+  if(a_width > 8){
+    color_and_print_string_at("\u2192", 5, 0);
+  }
+  if(a_width > 9){
+    color_and_print_string_at("\u2191", 6, 0);
+  }
+  if(a_width > 10){
+    color_and_print_string_at("\u2193", 7, 0);
+  }
+  if(a_width > 11){
+    color_and_print_string_at("\u2190\u2192", 8, 0);
+  }
+  if(a_width > 12){
+    color_and_print_string_at("\u2190\u2192", 9, 0, "flip");
+  }
+  if(a_width > 13){
+    color_and_print_string_at("\u2192\u2190", 10, 0);
+  }
+  if(a_width > 14){
+    color_and_print_string_at("\u2192\u2190", 11, 0, "flip");
+  }
+}
 
-  for (i = 0; i < a_width; i++){
-    if (Math.abs(atox[i]-canvasX) < r){
-      a = i;
-      break;
-    }
-  }
-  for (j = 0; j < b_height; j++){
-    if (Math.abs(btoy[j]-canvasY) < r){
-      b = j;
-      break;
-    }
-  }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    labels[index(a,b)] = 0;
-    refresh_canvas();
-    return false;
-  }
-  // widen_canvas();
+canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
+  // var coords = canvas.relMouseCoords(event);
+  // var canvasX = coords.x;
+  // var canvasY = coords.y;
+
+  // for (i = 0; i < a_width; i++){
+  //   if (Math.abs(atox[i]-canvasX) < r){
+  //     a = i;
+  //     break;
+  //   }
+  // }
+  // for (j = 0; j < b_height; j++){
+  //   if (Math.abs(btoy[j]-canvasY) < r){
+  //     b = j;
+  //     break;
+  //   }
+  // }
+  // if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+  //   labels[index(a,b)] = 0;
+  //   refresh_canvas();
+  //   return false;
+  // }
   return false;
 }
