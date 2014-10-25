@@ -555,26 +555,26 @@ function draw_menu_bar(){
 }
 
 canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-  // var coords = canvas.relMouseCoords(event);
-  // var canvasX = coords.x;
-  // var canvasY = coords.y;
+  var coords = canvas.relMouseCoords(event);
+  var canvasX = coords.x;
+  var canvasY = coords.y;
 
-  // for (i = 0; i < a_width; i++){
-  //   if (Math.abs(atox[i]-canvasX) < r){
-  //     a = i;
-  //     break;
-  //   }
-  // }
-  // for (j = 0; j < b_height; j++){
-  //   if (Math.abs(btoy[j]-canvasY) < r){
-  //     b = j;
-  //     break;
-  //   }
-  // }
-  // if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-  //   labels[index(a,b)] = 0;
-  //   refresh_canvas();
-  //   return false;
-  // }
+  for (i = 0; i < a_width; i++){
+    if (Math.abs(atox[i]-canvasX) < r){
+      a = i;
+      break;
+    }
+  }
+  for (j = 0; j < b_height; j++){
+    if (Math.abs(btoy[j]-canvasY) < r){
+      b = j;
+      break;
+    }
+  }
+  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+    labels[index(a,b)] = 0;
+    refresh_canvas();
+    return false;
+  }
   return false;
 }
