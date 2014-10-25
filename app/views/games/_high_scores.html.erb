@@ -4,7 +4,7 @@
 		<% HighScore.all.order(:id).each do |hs|%>
 			<% i = hs.level %>
 			<% bound = 0 %>
-			<% a123663.each do |k|
+			<% Game.a123663.each do |k|
 				bound += 1
 				break if k >= i*(i-1)/2
 				end %>
