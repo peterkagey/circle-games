@@ -14,10 +14,11 @@
 	<%= javascript_include_tag 'games' %>
 	<% sol = params[:id].blank? || Game.find(params[:id]).blank? ? "" : Game.find(params[:id]).solution || ""%>
 	<% a_wid = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).max_a || 0%>
+	<% b_hgt = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).max_b || 0%>
 	<% a_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_a || 0%>
 	<% b_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_b || 0%>
 	
-	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, 0);</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
+	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, #{b_hgt});</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
 </div>
 <div id = "instructions">
 	Here's how you play:<br>

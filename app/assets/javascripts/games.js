@@ -395,7 +395,7 @@ function set_size(){
   }
   //assume that a is too big, and b is never too big
   a_width = Math.max(ruby_a, default_a_width);
-  b_height = 10;
+  b_height = Math.max(ruby_b+b_shift+1, default_b_height);
   // b_height = Math.max(ruby_b, default_b_height);
   canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
   canvas.height = (b_height * canvas.width) / a_width;
