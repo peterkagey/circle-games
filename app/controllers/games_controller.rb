@@ -2,6 +2,8 @@ class GamesController < ApplicationController
 
 	def index
 		@game = Game.new
+		@jshash = "", 0, 0, 0, 0
+
 	end
 
 	def create #FIXME, confirm score
@@ -15,7 +17,13 @@ class GamesController < ApplicationController
 	end
 
 	def show #FIXME, confirm score
-		@game = params[:id].nil? ? Game.new : Game.find(params[:id])
+		begin
+			@game = Game.find(params[:id])
+			@jshash = @game.solution, @game.max_a, @game.max_b, @game.start_a, @game.start_b
+		rescue ActiveRecord::RecordNotFound
+			@game = Game.new
+			@jshash = "", 0, 0, 0, 0
+		end
 	end	
 
 	def level_solution

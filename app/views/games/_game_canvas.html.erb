@@ -12,12 +12,7 @@
 		<%#= f.submit %>
 	<% end %>
 	<%= javascript_include_tag 'games' %>
-	<% sol = params[:id].blank? || Game.find(params[:id]).blank? ? "" : Game.find(params[:id]).solution || ""%>
-	<% a_wid = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).max_a || 0%>
-	<% b_hgt = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).max_b || 0%>
-	<% a_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_a || 0%>
-	<% b_shft = params[:id].blank? || Game.find(params[:id]).blank? ? 0 : Game.find(params[:id]).start_b || 0%>
-	
+	<% sol, a_wid, b_hgt, a_shft, b_shft = @jshash %>
 	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, #{b_hgt});</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
 </div>
 <div id = "instructions">
