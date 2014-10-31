@@ -64,6 +64,7 @@ var atox = []; var btoy = [];
 var max_vertex = 3;
 var level; var score;
 var alec_string;
+var coords; var canvasX; var canvasY
 
 function initialize_atox_and_btoy(){
   for (a = 0; a < a_width ; a++){
@@ -444,9 +445,6 @@ function move_everything(direction){
 }
 
 canvas.onclick = function() {
-  var coords = canvas.relMouseCoords(event);
-  var canvasX = coords.x;
-  var canvasY = coords.y;
 
   if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
     max_vertex--;
@@ -555,10 +553,45 @@ function draw_menu_bar(){
 }
 
 canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-  var coords = canvas.relMouseCoords(event);
-  var canvasX = coords.x;
-  var canvasY = coords.y;
+ 
+  for (i = 0; i < a_width; i++){
+    if (Math.abs(atox[i]-canvasX) < r){
+      a = i;
+      break;
+    }
+  }
+  for (j = 0; j < b_height; j++){
+    if (Math.abs(btoy[j]-canvasY) < r){
+      b = j;
+      break;
+    }
+  }
+  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+    labels[index(a,b)] = (labels[index(a,b)] + 1) % (max_vertex + 1);
+    refresh_canvas();
+    return false;
+  }
+  return false;
+}
 
+var handlefocus=function(e){
+  if(e.type=='mouseover'){
+    canvas.focus();
+    return false;
+  }else if(e.type=='mouseout'){
+    canvas.blur();
+    return false;
+  }
+  return true;
+};
+
+canvas.onmousemove = function(){
+  coords = canvas.relMouseCoords(event);
+  canvasX = coords.x;
+  canvasY = coords.y;
+}
+
+var handlekeydown = function(e){
   for (i = 0; i < a_width; i++){
     if (Math.abs(atox[i]-canvasX) < r){
       a = i;
@@ -576,5 +609,9 @@ canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
     refresh_canvas();
     return false;
   }
-  return false;
 }
+
+canvas.addEventListener('mouseover',handlefocus,false);
+canvas.addEventListener('mouseout',handlefocus,false);
+canvas.addEventListener('keydown',handlekeydown,false);
+

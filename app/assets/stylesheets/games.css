@@ -28,6 +28,10 @@ canvas{
  	z-index 			: 1000;
 }
 
+canvas:focus{
+    outline: none;
+}
+
 input{
 	color : red;
 }
