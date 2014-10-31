@@ -75,7 +75,7 @@ function initialize_atox_and_btoy(){
   }
 }
 
-function intialize_labels(a, b){
+function initialize_labels(a, b){
   for (i = 0; i < a*(b-1); i++){
     labels[i] = 0;
   }
@@ -299,7 +299,7 @@ function set_initial_positions(solution_string){
     if (a_pos == a_shift){
       b_row++;
     }
-    labels[index(a_pos, b_row)] = solution_list[i];
+    labels[index(a_pos, b_row)] = parseInt(solution_list[i]);
   }
 }
 
@@ -329,7 +329,7 @@ function initialize_everything(solution_string, ruby_a_shift, ruby_b_shift, ruby
   b_shift = ruby_b_shift;
   set_size();
   initialize_atox_and_btoy();
-  intialize_labels(a_width, b_height);
+  initialize_labels(a_width, b_height);
   set_initial_positions(solution_string);
   max_vertex = Math.max(max_label(), max_vertex);
   refresh_canvas();
@@ -553,7 +553,7 @@ function draw_menu_bar(){
 }
 
 canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
- 
+
   for (i = 0; i < a_width; i++){
     if (Math.abs(atox[i]-canvasX) < r){
       a = i;
@@ -567,7 +567,7 @@ canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
     }
   }
   if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    labels[index(a,b)] = (labels[index(a,b)] + 1) % (max_vertex + 1);
+    labels[index(a,b)] = (parseInt(labels[index(a,b)]) + 1) % (max_vertex + 1);
     refresh_canvas();
     return false;
   }
