@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vertices: 1
+  level: 1
+  start_a: 1
+  start_b: 1
+  solution: MyText
+
+two:
+  vertices: 1
+  level: 1
+  start_a: 1
+  start_b: 1
+  solution: MyText

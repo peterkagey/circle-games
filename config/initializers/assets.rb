@@ -2,7 +2,8 @@
 
 # Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = '1.0'
-Rails.application.config.assets.precompile += %w( games.js )
+Rails.application.config.assets.precompile += %w( square_game.js )
+Rails.application.config.assets.precompile += %w( triangle_game.js )
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )

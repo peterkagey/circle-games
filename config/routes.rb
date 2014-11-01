@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  resources :games
+  get 'triangle_games/show'
+  resources :triangle_games
+  resources :square_games
   resources :high_scores
-   root 'games#show'
+   root 'square_games#show'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

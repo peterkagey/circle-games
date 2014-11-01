@@ -1,4 +1,4 @@
-class Game < ActiveRecord::Base
+class SquareGame < ActiveRecord::Base
 
   belongs_to :high_score
   before_save :simp_sol

@@ -1,6 +1,6 @@
 class HighScore < ActiveRecord::Base
 
-has_many :games, foreign_key: "level"
+has_many :square_games, foreign_key: "level"
 after_save :make_level_match_id
 
 def make_level_match_id

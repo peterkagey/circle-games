@@ -1,0 +1,2 @@
+module TriangleGamesHelper
+end

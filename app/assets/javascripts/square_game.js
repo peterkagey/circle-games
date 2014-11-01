@@ -50,7 +50,7 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
 
 //////////////////////////////////////////////////////
 
-var canvas = document.getElementById("game_canvas");
+var canvas = document.getElementById("square_game_canvas");
 var context = canvas.getContext("2d");
 // context.fillStyle = "red";
 var default_a_width; var default_b_height;
@@ -88,7 +88,7 @@ function reset_canvas(){
 function color_and_label_all_circles(){
   for (b = 1; b < b_height ; b++){
     for (a = 0; a < a_width ; a++) {
-      color_based_on_state(a, b);
+      draw_circle_based_on_state(a, b);
     }
   }
 }
@@ -100,7 +100,7 @@ function update_state(a,b){
   (labels[i] > 0) ? labels[i]-- : labels[i] = max_vertex;
 }
 
-function color_based_on_state(a, b){
+function draw_circle_based_on_state(a, b){
   var state;
   if (b == 0){
     state = "menu";
@@ -143,7 +143,7 @@ function print_string_at(text_string, a, b, flipstring){
 } // make sure penultimate number is same as context.font
 
 function color_and_print_string_at(string, a, b, flipstring){
-  color_based_on_state(a,b);
+  draw_circle_based_on_state(a,b);
   print_string_at(string, a, b, flipstring);
 }
 
@@ -198,7 +198,7 @@ function max_label(){
 }
 
 function reset_game_matrix(){
-  n = Math.max(max_label(), max_vertex);
+  var n = Math.max(max_label(), max_vertex);
   var matrix = [];
   for(i=0; i < n; i++) {
     matrix[i] = [];
@@ -304,11 +304,11 @@ function set_initial_positions(solution_string){
 }
 
 function set_rails_values(){
-  document.getElementById("game_vertices").value  = score;
-  document.getElementById("game_level").value     = level;
-  document.getElementById("game_max_a").value     = a_width;
-  document.getElementById("game_max_b").value     = b_height;
-  document.getElementById("game_solution").value  = labels;
+  document.getElementById("square_game_vertices").value  = score;
+  document.getElementById("square_game_level").value     = level;
+  document.getElementById("square_game_max_a").value     = a_width;
+  document.getElementById("square_game_max_b").value     = b_height;
+  document.getElementById("square_game_solution").value  = labels;
   document.getElementById("alec_notes").value     = alec_string;
 }
 
@@ -455,10 +455,10 @@ canvas.onclick = function() {
     refresh_canvas();
     return false;
   }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
-    document.getElementById("new_game").submit();
+    document.getElementById("new_square_game").submit();
     return
   }else if(a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
-    document.getElementById("new_game").submit(); // seems broken.
+    document.getElementById("new_square_game").submit(); // seems broken.
     window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path" solution.
     return
   }else if(a_width > 7 && distance(canvasX, canvasY, atox[4], btoy[0]) < r){
@@ -553,7 +553,6 @@ function draw_menu_bar(){
 }
 
 canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-
   for (i = 0; i < a_width; i++){
     if (Math.abs(atox[i]-canvasX) < r){
       a = i;
@@ -586,7 +585,7 @@ var handlefocus=function(e){
 };
 
 canvas.onmousemove = function(){
-  coords = canvas.relMouseCoords(event);
+  var coords = canvas.relMouseCoords(event);
   canvasX = coords.x;
   canvasY = coords.y;
 }

@@ -1,8 +1,8 @@
 <div class = "canvas">
-	<canvas id="game_canvas" tabindex=1></canvas>
+	<canvas id="square_game_canvas" tabindex=1></canvas>
 	<br> This is a new OEIS sequence!
 
- 	<%= form_for Game.new do |f| %>
+ 	<%= form_for SquareGame.new do |f| %>
 		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
 		<%= f.hidden_field :level, size:1 %>
 		<%= f.hidden_field :max_a, size:1 %>
@@ -11,7 +11,7 @@
 		<%= text_area(:alec, :notes, rows: 15) %>
 		<%#= f.submit %>
 	<% end %>
-	<%= javascript_include_tag 'games' %>
+	<%= javascript_include_tag 'square_game' %>
 	<% sol, a_wid, b_hgt, a_shft, b_shft = @jshash %>
 	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, #{b_hgt});</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
 </div>

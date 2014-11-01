@@ -1,0 +1,14 @@
+<div class = "canvas">
+	<canvas id="triangle_game_canvas" tabindex=1></canvas>
+	<%= javascript_include_tag 'triangle_game' %>
+	 	<%= form_for TriangleGame.new do |f| %>
+		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
+		<%= f.hidden_field :level, size:1 %>
+		<%#= f.hidden_field :max_a, size:1 %>
+		<%#= f.hidden_field :max_b, size:1 %>
+		<%= f.hidden_field :solution, size:30 %>
+		<%= text_area(:alec, :notes, rows: 15) %>
+		<%#= f.submit %>
+	<% end %>
+
+</div>

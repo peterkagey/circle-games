@@ -11,12 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141018194429) do
+ActiveRecord::Schema.define(version: 20141101060858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "games", force: true do |t|
+  create_table "high_scores", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "level"
+    t.integer  "best_score"
+    t.integer  "best_game_id"
+  end
+
+  create_table "square_games", force: true do |t|
     t.integer  "vertices"
     t.integer  "level"
     t.text     "solution"
@@ -28,12 +36,14 @@ ActiveRecord::Schema.define(version: 20141018194429) do
     t.datetime "updated_at"
   end
 
-  create_table "high_scores", force: true do |t|
+  create_table "triangle_games", force: true do |t|
+    t.integer  "vertices"
+    t.integer  "level"
+    t.integer  "start_a"
+    t.integer  "start_b"
+    t.text     "solution"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "level"
-    t.integer  "best_score"
-    t.integer  "best_game_id"
   end
 
 end
