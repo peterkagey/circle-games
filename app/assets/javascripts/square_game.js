@@ -657,8 +657,8 @@ document.onmouseup = function(){
       }
     }
     if (distance(atox[a], btoy[b], canvasX+clickXdel, canvasY+clickYdel) < r){
-      labels[index(a,b)] = value_of_moving_circle;
       labels[index(click_original_a, click_original_b)] = 0;
+      labels[index(a,b)] = value_of_moving_circle;
       refresh_canvas();
     }
   }else{
