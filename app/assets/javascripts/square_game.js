@@ -65,6 +65,21 @@ var max_vertex = 3;
 var level; var score;
 var alec_string;
 var coords; var canvasX; var canvasY
+var backCanvas = document.createElement('canvas');
+var backCtx = backCanvas.getContext('2d');
+var mouseDown = 0
+var clickXdel; var clickYdel;
+var click_original_a; var click_original_b;
+var value_of_moving_circle
+var dragging = false;
+
+function saveCanvas(){
+  backCtx.drawImage(canvas, 0,0);
+}
+
+function restoreCanvas(){
+  context.drawImage(backCanvas, 0,0);
+}
 
 function initialize_atox_and_btoy(){
   for (a = 0; a < a_width ; a++){
@@ -82,7 +97,7 @@ function initialize_labels(a, b){
 }
 
 function reset_canvas(){
-  context.canvas.width = context.canvas.width;
+  canvas.width = canvas.width;
 }
 
 function color_and_label_all_circles(){
@@ -139,6 +154,19 @@ function print_string_at(text_string, a, b, flipstring){
   context.rotate(-Math.PI/2);
   }else{
   context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));
+  }
+} // make sure penultimate number is same as context.font
+
+function print_string_at_xy(text_string, x, y, flipstring){
+  context.font = '20px Helvetica';
+  context.fillStyle = 'white';
+  context.textAlign = 'center';
+  if (flipstring == "flip"){
+  context.rotate(Math.PI/2);
+  context.fillText(text_string, y, -x + 20/(2.62));
+  context.rotate(-Math.PI/2);
+  }else{
+  context.fillText(text_string, x, y + 20/(2.62));
   }
 } // make sure penultimate number is same as context.font
 
@@ -288,7 +316,6 @@ function calculate_proximity_and_draw_all_lines(){ // FIXME : this was split up 
 }
 
 function set_initial_positions(solution_string){
-  // console.log(ruby_a + a_shift, a_width); 
   if (ruby_a + a_shift > a_width){
     a_shift = a_width - ruby_a
   }; 
@@ -314,6 +341,10 @@ function set_rails_values(){
 
 function refresh_canvas(){
   reset_canvas();
+  context.rect(0,0,canvas.width,canvas.height);
+  context.fillStyle = color2;
+  context.fill();
+  context.stroke();
   reset_game_matrix();
   color_and_label_all_circles();
   calculate_proximity_and_draw_all_lines();
@@ -366,7 +397,6 @@ function resize_canvas(dimension){
     r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
     initialize_atox_and_btoy();
     for(i = 1; i < b_height; i++){
-      // console.log(i);
       labels.splice(i * a_width, 1)
     }
   }    
@@ -401,6 +431,8 @@ function set_size(){
   canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
   canvas.height = (b_height * canvas.width) / a_width;
   r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+  backCanvas.width = canvas.width;
+  backCanvas.height = canvas.height;
 }
 
 function move_everything(direction){
@@ -444,57 +476,10 @@ function move_everything(direction){
   }
 }
 
-canvas.onclick = function() {
-
-  if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
-    max_vertex--;
-    refresh_canvas();
-    return false;
-  }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r){
-    max_vertex++;
-    refresh_canvas();
-    return false;
-  }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
-    document.getElementById("new_square_game").submit();
-    return
-  }else if(a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
-    document.getElementById("new_square_game").submit(); // seems broken.
-    window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path" solution.
-    return
-  }else if(a_width > 7 && distance(canvasX, canvasY, atox[4], btoy[0]) < r){
-    move_everything("left");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 8 && distance(canvasX, canvasY, atox[5], btoy[0]) < r){
-    move_everything("right");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 9 && distance(canvasX, canvasY, atox[6], btoy[0]) < r){
-    move_everything("up");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 10 && distance(canvasX, canvasY, atox[7], btoy[0]) < r){
-    move_everything("down");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 11 && distance(canvasX, canvasY, atox[8], btoy[0]) < r){
-    resize_canvas("widen");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 12 && distance(canvasX, canvasY, atox[9], btoy[0]) < r){
-    resize_canvas("heighten");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 13 && distance(canvasX, canvasY, atox[10], btoy[0]) < r){
-    resize_canvas("narrow");
-    refresh_canvas();
-    return false;
-  }else if(a_width > 14 && distance(canvasX, canvasY, atox[11], btoy[0]) < r){
-    resize_canvas("shorten");
-    refresh_canvas();
-    return false;
-  }
-
+var handlemousedown = function() { // Where the clickiness happens.
+  mouseDown++
+  dragging = false;
+  var a; var b;
   for (i = 0; i < a_width; i++){
     if (Math.abs(atox[i]-canvasX) < r){
       a = i;
@@ -507,10 +492,77 @@ canvas.onclick = function() {
       break;
     }
   }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    update_state(a,b);
-    refresh_canvas();
-    return false;
+  if (event.which == 1){
+    if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){
+      max_vertex--;
+      refresh_canvas();
+      return false;
+    }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r){
+      max_vertex++;
+      refresh_canvas();
+      return false;
+    }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
+      document.getElementById("new_square_game").submit();
+      return
+    }else if(a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
+      document.getElementById("new_square_game").submit(); // seems broken.
+      window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path" solution.
+      return
+    }else if(a_width > 7 && distance(canvasX, canvasY, atox[4], btoy[0]) < r){
+      move_everything("left");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 8 && distance(canvasX, canvasY, atox[5], btoy[0]) < r){
+      move_everything("right");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 9 && distance(canvasX, canvasY, atox[6], btoy[0]) < r){
+      move_everything("up");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 10 && distance(canvasX, canvasY, atox[7], btoy[0]) < r){
+      move_everything("down");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 11 && distance(canvasX, canvasY, atox[8], btoy[0]) < r){
+      resize_canvas("widen");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 12 && distance(canvasX, canvasY, atox[9], btoy[0]) < r){
+      resize_canvas("heighten");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 13 && distance(canvasX, canvasY, atox[10], btoy[0]) < r){
+      resize_canvas("narrow");
+      refresh_canvas();
+      return false;
+    }else if(a_width > 14 && distance(canvasX, canvasY, atox[11], btoy[0]) < r){
+      resize_canvas("shorten");
+      refresh_canvas();
+      return false;
+    }
+    if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+      click_original_a = a;
+      click_original_b = b;
+      clickXdel = atox[a] - canvasX;
+      clickYdel = btoy[b] - canvasY;
+      value_of_moving_circle = labels[index(a,b)];
+      labels[index(a,b)] = 0;
+      refresh_canvas();
+      saveCanvas();
+      labels[index(a,b)] = value_of_moving_circle;
+      refresh_canvas();
+      return false;
+    }else{
+      value_of_moving_circle = 0;
+    }
+  }
+  if (event.which == 3){
+    if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+      labels[index(a,b)] = (parseInt(labels[index(a,b)]) + 1) % (max_vertex + 1);
+      refresh_canvas();
+      return false;
+    }
   }
 }
 
@@ -552,28 +604,11 @@ function draw_menu_bar(){
   }
 }
 
-canvas.oncontextmenu = function() { // FIXME : this isn't very DRY.
-  for (i = 0; i < a_width; i++){
-    if (Math.abs(atox[i]-canvasX) < r){
-      a = i;
-      break;
-    }
-  }
-  for (j = 0; j < b_height; j++){
-    if (Math.abs(btoy[j]-canvasY) < r){
-      b = j;
-      break;
-    }
-  }
-  if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-    labels[index(a,b)] = (parseInt(labels[index(a,b)]) + 1) % (max_vertex + 1);
-    refresh_canvas();
-    return false;
-  }
+canvas.oncontextmenu = function() {
   return false;
 }
 
-var handlefocus=function(e){
+var handlefocus = function(e){
   if(e.type=='mouseover'){
     canvas.focus();
     return false;
@@ -588,9 +623,69 @@ canvas.onmousemove = function(){
   var coords = canvas.relMouseCoords(event);
   canvasX = coords.x;
   canvasY = coords.y;
+  // refresh_canvas();
+  if(mouseDown && event.which == 1 && value_of_moving_circle > 0){
+    dragging = true;
+    restoreCanvas();
+    context.beginPath();
+    context.arc(canvasX + clickXdel, canvasY + clickYdel, r, 0, 2 * 3.1415);
+    context.fillStyle = color3;
+    context.fill();
+    context.lineWidth = 2;
+    context.strokeStyle = "white";
+    context.stroke();
+    print_string_at_xy(value_of_moving_circle, canvasX + clickXdel, canvasY + clickYdel);
+  }
 }
 
-var handlekeydown = function(e){
+document.onmouseup = function(){
+  var a; var b;
+  refresh_canvas();
+  saveCanvas();
+  mouseDown--
+  if (dragging){
+    for (i = 0; i < a_width; i++){
+      if (Math.abs(atox[i] - (canvasX+clickXdel)) < r){
+        a = i;
+        break;
+      }
+    }
+    for (j = 0; j < b_height; j++){
+      if (Math.abs(btoy[j] - (canvasY+clickYdel)) < r){
+        b = j;
+        break;
+      }
+    }
+    if (distance(atox[a], btoy[b], canvasX+clickXdel, canvasY+clickYdel) < r){
+      labels[index(a,b)] = value_of_moving_circle;
+      labels[index(click_original_a, click_original_b)] = 0;
+      refresh_canvas();
+    }
+  }else{
+    for (i = 0; i < a_width; i++){
+      if (Math.abs(atox[i] - canvasX) < r){
+        a = i;
+        break;
+      }
+    }
+    for (j = 0; j < b_height; j++){
+      if (Math.abs(btoy[j] - canvasY) < r){
+        b = j;
+        break;
+      }
+    }
+    if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
+      if (event.which == 1){
+        update_state(a,b);
+      }
+      refresh_canvas();
+    }
+  }
+  dragging = false; // does the magic on mouseup
+}
+
+var handlekeydown = function(){
+  var a; var b
   for (i = 0; i < a_width; i++){
     if (Math.abs(atox[i]-canvasX) < r){
       a = i;
@@ -610,7 +705,15 @@ var handlekeydown = function(e){
   }
 }
 
-canvas.addEventListener('mouseover',handlefocus,false);
-canvas.addEventListener('mouseout',handlefocus,false);
-canvas.addEventListener('keydown',handlekeydown,false);
+function saveCanvas(){
+  backCtx.drawImage(canvas, 0,0);
+}
 
+function restoreCanvas(){
+  context.drawImage(backCanvas, 0,0);
+}
+
+canvas.addEventListener('mouseover', handlefocus, false);
+canvas.addEventListener('mouseout', handlefocus, false);
+canvas.addEventListener('keydown', handlekeydown, false);
+canvas.addEventListener('mousedown', handlemousedown, false);
