@@ -650,7 +650,7 @@ document.onmouseup = function(){
         break;
       }
     }
-    for (j = 0; j < b_height; j++){
+    for (j = 1; j < b_height; j++){
       if (Math.abs(btoy[j] - (canvasY+clickYdel)) < r){
         b = j;
         break;
@@ -668,7 +668,7 @@ document.onmouseup = function(){
         break;
       }
     }
-    for (j = 0; j < b_height; j++){
+    for (j = 1; j < b_height; j++){
       if (Math.abs(btoy[j] - canvasY) < r){
         b = j;
         break;
