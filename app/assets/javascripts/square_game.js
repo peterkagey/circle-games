@@ -717,3 +717,19 @@ canvas.addEventListener('keydown', handlekeydown, false);
 canvas.addEventListener('mousedown', handlemousedown, false);
 canvas.addEventListener('mousemove', handlemousemove, false);
 canvas.addEventListener('mouseup', handlemouseup, false);
+
+$(document).ready(function(){
+  $("#instr").click(function(){
+    $("#instructions_paragraph").toggle();
+  });
+});
+$(document).ready(function(){
+  $("#connect").click(function(){
+    $("#alec_notes").toggle();
+  });
+});
+$(document).ready(function(){
+  $("#best_sol").click(function(){
+    $("li").toggle();
+  });
+});

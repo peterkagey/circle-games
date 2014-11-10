@@ -12,24 +12,11 @@
 			<lh id="connect"><b> Connections </b></lh><br>
 			<%= text_area(:alec, :notes, rows: 12) %>
 		</div>
-		<%#= f.submit %>
 	<% end %>
 
 	<%= javascript_include_tag 'square_game' %>
 	<%= "<script>initialize_everything(#{@jshash});</script>".html_safe %>
 </div>
-<script>
-$(document).ready(function(){
-  $("#instr").click(function(){
-    $("#instructions_paragraph").toggle();
-  });
-});
-$(document).ready(function(){
-  $("#connect").click(function(){
-    $("#alec_notes").toggle();
-  });
-});
-</script>
 <div id = "instructions">
 	<lh id="instr"><b> Instructions </b></lh>
 	<p id="instructions_paragraph">
