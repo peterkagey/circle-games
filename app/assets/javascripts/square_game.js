@@ -76,7 +76,13 @@ var clickXdel; var clickYdel;
 var click_original_a; var click_original_b;
 var value_of_moving_circle
 var dragging = false; var mouseDown = false;
+var font_size = 20; var border_width = 2;
 
+function set_r(){
+  r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+  font_size = Math.round(4 * r / 5);
+  border_width = r / 12
+}
 
 function initialize_everything(ss, ras, rbs, raw, rbh){
   ruby_a = raw; ruby_b = rbh; a_shift = ras; b_shift = rbs;
@@ -88,23 +94,15 @@ function initialize_everything(ss, ras, rbs, raw, rbh){
   refresh_canvas();
 }
 function set_size(){
-  if (window.innerWidth < 600){
-    default_a_width = 6;
-    default_b_height = 10;
-  }else if(window.innerWidth < 1200){
-    default_a_width = 12;
-    default_b_height = 10;
-  }else{
-    default_a_width = 18;
-    default_b_height = 10;
-  }
+  default_a_width = Math.max(6, Math.round((window.innerWidth-scrollCompensate())/60));
+  default_b_height = 10;
   //assume that a is too big, and b is never too big
   a_width = Math.max(ruby_a, default_a_width);
   b_height = Math.max(ruby_b+b_shift+1, default_b_height);
   // b_height = Math.max(ruby_b, default_b_height);
-  canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
+  canvas.width = window.innerWidth-scrollCompensate();
   canvas.height = (b_height * canvas.width) / a_width;
-  r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+  set_r();
   backCanvas.width = canvas.width;
   backCanvas.height = canvas.height;
 }
@@ -157,7 +155,9 @@ function reset_game_matrix(){
   }
   game_matrix = matrix;}
 
-function distance(x1, y1, x2, y2){return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));}
+function distance(x1, y1, x2, y2){
+  return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));
+}
 
 function update_state(a,b){
   i = index(a,b);
@@ -173,17 +173,17 @@ function draw_circle_based_on_state(a, b){
   if (state == "menu"){
     context.fillStyle = color4;
     context.fill();
-    context.lineWidth = 2;
+    context.lineWidth = border_width;
     context.strokeStyle = "white";
   }else if (state == 0){
     context.fillStyle = color2;
     context.fill();
-    context.lineWidth = 2;
+    context.lineWidth = border_width;
     context.strokeStyle = color1;
   }else{
     context.fillStyle = color3;
     context.fill();
-    context.lineWidth = 2;
+    context.lineWidth = border_width;
     context.strokeStyle = "white";
     print_string_at(state, a, b);
   }
@@ -191,30 +191,30 @@ function draw_circle_based_on_state(a, b){
 }
 
 function print_string_at(text_string, a, b, flipstring){
-  context.font = '20px Helvetica';
+  context.font = font_size + "px Helvetica";
   context.fillStyle = 'white';
   context.textAlign = 'center';
   if (flipstring == "flip"){
   context.rotate(Math.PI/2);
-  context.fillText(text_string, btoy[b], -atox[a] + 20/(2.62));
+  context.fillText(text_string, btoy[b], -atox[a] + font_size/(2.62));
   context.rotate(-Math.PI/2);
   }else{
-  context.fillText(text_string, atox[a], btoy[b] + 20/(2.62));
+  context.fillText(text_string, atox[a], btoy[b] + font_size/(2.62));
   }
-} // make sure penultimate number is same as context.font
+}
 
 function print_string_at_xy(text_string, x, y, flipstring){
-  context.font = '20px Helvetica';
+  context.font = font_size +'px Helvetica';
   context.fillStyle = 'white';
   context.textAlign = 'center';
   if (flipstring == "flip"){
   context.rotate(Math.PI/2);
-  context.fillText(text_string, y, -x + 20/(2.62));
+  context.fillText(text_string, y, -x + font_size/(2.62));
   context.rotate(-Math.PI/2);
   }else{
-  context.fillText(text_string, x, y + 20/(2.62));
+  context.fillText(text_string, x, y + font_size/(2.62));
   }
-} // make sure penultimate number is same as context.font
+}
 
 function color_and_print_string_at(string, a, b, flipstring){
   draw_circle_based_on_state(a,b);
@@ -234,7 +234,7 @@ function number_of_vertices(){
 function draw_line(a1, b1, a2, b2){
   var x1, x2, y1, y2;
   context.beginPath();
-  if(a1 == a2){
+  if (a1 == a2){
     x1 = atox[a1];
     x2 = atox[a2];
     y1 = btoy[Math.min(b1,b2)]+r+2;
@@ -247,9 +247,9 @@ function draw_line(a1, b1, a2, b2){
   }
   context.moveTo(x1, y1);
   context.lineTo(x2, y2);
-  context.lineWidth = 4;
+  context.lineWidth = border_width * 2;
   
-  if(game_matrix[labels[index(a1,b1)]-1][labels[index(a2,b2)]-1] > 1){
+  if (game_matrix[labels[index(a1,b1)]-1][labels[index(a2,b2)]-1] > 1){
     context.strokeStyle = 'red';
   }else{
     context.strokeStyle = 'white';
@@ -284,7 +284,7 @@ function i_touches_j(i, j, matrix){
   matrix[j-1][i-1]++;
 }
 
-function largest_full_submatrix(matrix){
+function largest_full_submatrix(matrix){ 
   for (n = 0; n < matrix.length+1; n++){
     for (i = 0; i < n; i++){
       for (j = 0; j < n; j++){
@@ -297,7 +297,7 @@ function largest_full_submatrix(matrix){
 
 function fix_s(string, length){return ("     " + string).slice(-length);}
 
-function set_alec_string(){
+function set_alec_string(){ 
   alec_string = "";
   var matrix = game_matrix;
   var len = matrix.length.toString().length
@@ -312,7 +312,7 @@ function set_alec_string(){
   return alec_string
 }
 
-function compare_right_and_down_and_update(a,b){
+function compare_right_and_down_and_update(a,b){ 
   var ab_state = labels[index(a,b)];
   if(ab_state == 0){
   return
@@ -327,7 +327,7 @@ function compare_right_and_down_and_update(a,b){
   }
 }
 
-function compare_right_and_down_and_draw(a,b){
+function compare_right_and_down_and_draw(a,b){ 
   ab_state = labels[index(a,b)];
   if(ab_state == 0){
   return
@@ -364,7 +364,7 @@ function set_rails_values(){
 
 function refresh_canvas(){
   canvas.width = canvas.width;
-  context.rect(0,0,canvas.width,canvas.height);
+  context.rect(0, 0, canvas.width, canvas.height);
   context.fillStyle = color2;
   context.fill();
   context.stroke();
@@ -376,12 +376,12 @@ function refresh_canvas(){
   set_rails_values();
 }
 
-function resize_canvas(dimension){
+function resize_canvas(dimension){ 
   if (dimension == "widen"){
     a_width++;
     canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
     canvas.height = (b_height * canvas.width) / a_width;
-    r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+    set_r();
     initialize_atox_and_btoy();
     for(i = 0; i < b_height-1; i++){
       labels.splice(i*a_width+a_width - 1, 0, 0);
@@ -404,7 +404,7 @@ function resize_canvas(dimension){
     a_width--;
     canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
     canvas.height = (b_height * canvas.width) / a_width;
-    r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+    set_r();
     initialize_atox_and_btoy();
     for(i = 1; i < b_height; i++){
       labels.splice(i * a_width, 1)
@@ -423,7 +423,7 @@ function resize_canvas(dimension){
   }
 }
 
-function move_everything(direction){
+function move_everything(direction){ 
   if (direction == "left"){
     for(i = 0; i < labels.length/a_width; i++){
       if(labels[i * a_width] != 0){ return false; }
@@ -460,24 +460,24 @@ var handlemousedown = function() { // Where the clickiness happens.
   var ab = ab_from_xy(canvasX, canvasY);
   a = ab[0]; b = ab[1];
   if (event.which == 1){
-    if (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1){ max_vertex--;
-    }else if(distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r)             { max_vertex++;
-    }else if(distance(canvasX, canvasY, atox[2], btoy[0]) < r){
-      document.getElementById("new_square_game").submit();
-      return
-    }else if(a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
+    if     (distance(canvasX, canvasY, atox[a_width-3], btoy[0]) < r && max_vertex > 1) { max_vertex--; }
+    else if (distance(canvasX, canvasY, atox[a_width-1], btoy[0]) < r && max_vertex < 99){ max_vertex++; }
+    else if (distance(canvasX, canvasY, atox[2], btoy[0]) < r){
+      document.getElementById("new_square_game").submit(); return
+    }
+    else if (a_width > 6 && distance(canvasX, canvasY, atox[3], btoy[0]) < r){
       document.getElementById("new_square_game").submit(); // seems broken.
       window.location.assign("http://www.peterkagey.com"); //I'd prefer a "home_path" solution.
       return
-    }else if(a_width > 7 && distance(canvasX, canvasY, atox[4], btoy[0]) < r)  { move_everything("left");
-    }else if(a_width > 8 && distance(canvasX, canvasY, atox[5], btoy[0]) < r)  { move_everything("right");
-    }else if(a_width > 9 && distance(canvasX, canvasY, atox[6], btoy[0]) < r)  { move_everything("up");
-    }else if(a_width > 10 && distance(canvasX, canvasY, atox[7], btoy[0]) < r) { move_everything("down");
-    }else if(a_width > 11 && distance(canvasX, canvasY, atox[8], btoy[0]) < r) { resize_canvas("widen");
-    }else if(a_width > 12 && distance(canvasX, canvasY, atox[9], btoy[0]) < r) { resize_canvas("heighten");
-    }else if(a_width > 13 && distance(canvasX, canvasY, atox[10], btoy[0]) < r){ resize_canvas("narrow");
-    }else if(a_width > 14 && distance(canvasX, canvasY, atox[11], btoy[0]) < r){ resize_canvas("shorten");
     }
+    else if (a_width > 7  && distance(canvasX, canvasY, atox[4], btoy[0])  < r){ move_everything("left");   }
+    else if (a_width > 8  && distance(canvasX, canvasY, atox[5], btoy[0])  < r){ move_everything("right");  }
+    else if (a_width > 9  && distance(canvasX, canvasY, atox[6], btoy[0])  < r){ move_everything("up");     }
+    else if (a_width > 10 && distance(canvasX, canvasY, atox[7], btoy[0])  < r){ move_everything("down");   }
+    else if (a_width > 11 && distance(canvasX, canvasY, atox[8], btoy[0])  < r){ resize_canvas("widen");    }
+    else if (a_width > 12 && distance(canvasX, canvasY, atox[9], btoy[0])  < r){ resize_canvas("heighten"); }
+    else if (a_width > 13 && distance(canvasX, canvasY, atox[10], btoy[0]) < r){ resize_canvas("narrow");   }
+    else if (a_width > 14 && distance(canvasX, canvasY, atox[11], btoy[0]) < r){ resize_canvas("shorten");  }
     if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
       click_original_a = a; click_original_b = b;
       clickXdel = atox[a] - canvasX; clickYdel = btoy[b] - canvasY;
@@ -486,9 +486,8 @@ var handlemousedown = function() { // Where the clickiness happens.
       refresh_canvas();
       saveCanvas();
       labels[index(a,b)] = value_of_moving_circle;
-    }else{
-      value_of_moving_circle = 0;
     }
+    else { value_of_moving_circle = 0; }
   }
   if (event.which == 3){
     if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
@@ -499,7 +498,7 @@ var handlemousedown = function() { // Where the clickiness happens.
   return false;
 }
 
-function draw_menu_bar(){
+function draw_menu_bar(){ 
   level = largest_full_submatrix(game_matrix);
   score = number_of_vertices();
   color_and_print_string_at(level, 0, 0);
@@ -523,7 +522,7 @@ canvas.oncontextmenu = function() {
   return false;
 }
 
-var handlefocus = function(e){
+var handlefocus = function(e){ 
   if(e.type=='mouseover'){
     canvas.focus();
     return false;
@@ -539,14 +538,14 @@ var handlemousemove = function(){
   canvasX = coords.x;
   canvasY = coords.y;
   // refresh_canvas();
-  if(mouseDown && event.which == 1 && value_of_moving_circle > 0){
+  if (mouseDown && event.which == 1 && value_of_moving_circle > 0){
     dragging = true;
     restoreCanvas();
     context.beginPath();
     context.arc(canvasX + clickXdel, canvasY + clickYdel, r, 0, 2 * 3.1415);
     context.fillStyle = color3;
     context.fill();
-    context.lineWidth = 2;
+    context.lineWidth = border_width;
     context.strokeStyle = "white";
     context.stroke();
     print_string_at_xy(value_of_moving_circle, canvasX + clickXdel, canvasY + clickYdel);
@@ -570,9 +569,7 @@ var handlemouseup = function(){
     var ab = ab_from_xy(canvasX, canvasY);
     a = ab[0]; b = ab[1];
     if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
-      if (event.which == 1){
-        update_state(a,b);
-      }
+      if (event.which == 1){ update_state(a,b); }
       refresh_canvas();
     }
   }
