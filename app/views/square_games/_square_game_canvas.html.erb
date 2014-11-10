@@ -8,20 +8,38 @@
 		<%= f.hidden_field :max_a, size:1 %>
 		<%= f.hidden_field :max_b, size:1 %>
 		<%= f.hidden_field :solution, size:30 %>
-		<%= text_area(:alec, :notes, rows: 15) %>
+		<div id = "connections"> 
+			<lh id="connect"><b> Connections </b></lh><br>
+			<%= text_area(:alec, :notes, rows: 12) %>
+		</div>
 		<%#= f.submit %>
 	<% end %>
+
 	<%= javascript_include_tag 'square_game' %>
-	<% sol, a_wid, b_hgt, a_shft, b_shft = @jshash %>
-	<%= "<script>initialize_everything('#{sol}', #{a_shft}, #{b_shft}, #{a_wid}, #{b_hgt});</script>".html_safe %> <!-- COULD THIS BE MORE HACKISH?! -->
+	<%= "<script>initialize_everything(#{@jshash});</script>".html_safe %>
 </div>
+<script>
+$(document).ready(function(){
+  $("#instr").click(function(){
+    $("#instructions_paragraph").toggle();
+  });
+});
+$(document).ready(function(){
+  $("#connect").click(function(){
+    $("#alec_notes").toggle();
+  });
+});
+</script>
 <div id = "instructions">
-	Here's how you play:<br>
-	Connect every number to every other number in as few circles as possible. <br>
-	Click on a link under "Best Solutions" for some examples. <br>
-	The circle in the left hand corner records the highest number that is fully connected. <br>
-	The circle to the right of that records how many circles are in play.<br>
-	The "S" button will allow you to submit your score and update the high-scores table.<br>
-	The circles in the right hand corner let you change how high you can select.<br>
-	Right clicking on a circle will remove it.
+	<lh id="instr"><b> Instructions </b></lh>
+	<p id="instructions_paragraph">
+		Here's how you play:<br>
+		Connect every number to every other number in as few circles as possible. <br>
+		Click on a link under "Best Solutions" for some examples. <br>
+		The circle in the left hand corner records the highest number that is fully connected. <br>
+		The circle to the right of that records how many circles are in play.<br>
+		The "S" button will allow you to submit your score and update the high-scores table.<br>
+		The circles in the right hand corner let you change how high you can select.<br>
+		Right clicking on a circle will remove it.
+	</p>
 </div>

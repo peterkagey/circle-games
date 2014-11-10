@@ -2,7 +2,7 @@ class SquareGamesController < ApplicationController
 
 	def index
 		@game = SquareGame.new
-		@jshash = "", 0, 0, 0, 0
+		@jshash = ["", 0, 0, 0, 0].inspect[1...-1]
 	end
 
 	def create #FIXME, confirm score
@@ -18,10 +18,10 @@ class SquareGamesController < ApplicationController
 	def show #FIXME, confirm score
 		begin
 			@game = SquareGame.find(params[:id])
-			@jshash = @game.solution, @game.max_a, @game.max_b, @game.start_a, @game.start_b
+			@jshash = [@game.solution, @game.start_a, @game.start_b, @game.max_a, @game.max_b].inspect[1...-1]
 		rescue ActiveRecord::RecordNotFound
 			@game = SquareGame.new
-			@jshash = "", 0, 0, 0, 0
+			@jshash = ["", 0, 0, 0, 0].inspect[1...-1]
 		end
 	end	
 

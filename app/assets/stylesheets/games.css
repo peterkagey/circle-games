@@ -41,7 +41,12 @@ lh{
 	font-variant : small-caps;
 }
 
+lh#best_sol{
+	padding-bottom: 25px;
+}
+
 li{
+	display      : none;
 	font-family  : Courier;
 	text-align 	 : left;
 	white-space  : pre-wrap;
@@ -77,13 +82,10 @@ pre > a{
 	text-indent  : 0;	
 }
 
-textarea{
-	width : calc(100% - 30px);
-}
 
 ul{
 	list-style-type : none;
-	padding 		: 0;
+	padding 		: 0, 0, 25px, 0;
 	width 			: 120;
 }
 
@@ -140,9 +142,12 @@ ul{
 	width 			 : 100%;
 	z-index 		 : 98;
 }
+
+
 .right_paragraph{
+
 	display : inline-block;
-	padding : 10px;
+	padding : 0 25px 25px 25px;
 }
 
 
@@ -153,8 +158,13 @@ ul{
 #alec_notes{
 	background-color : #222222;
 	color 			 : #ffffff;
+	display			 : none;
 	font-family 	 : courier;
 	padding 		 : 15px;
+}
+
+#connections{
+	padding : 0 25px 0 25px;	
 }
 
 #foo{
@@ -177,6 +187,11 @@ ul{
 
 #instructions{
 	display : inline-block;
-	padding : 0 50px 0 50px;
+	padding : 0 25px 0 25px;
 	width   : calc(100%-100px);
+}
+
+#instructions > p{
+	display: none;
+	text-indent: 0;
 }

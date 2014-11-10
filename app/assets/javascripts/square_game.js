@@ -175,8 +175,6 @@ function color_and_print_string_at(string, a, b, flipstring){
   print_string_at(string, a, b, flipstring);
 }
 
-
-
 function number_of_vertices(){
   var count = 0;
   for (i = 0; i < a_width*(b_height-1); i++) {
@@ -619,7 +617,7 @@ var handlefocus = function(e){
   return true;
 };
 
-canvas.onmousemove = function(){
+var handlemousemove = function(){
   var coords = canvas.relMouseCoords(event);
   canvasX = coords.x;
   canvasY = coords.y;
@@ -638,7 +636,7 @@ canvas.onmousemove = function(){
   }
 }
 
-document.onmouseup = function(){
+var handlemouseup = function(){
   var a; var b;
   refresh_canvas();
   saveCanvas();
@@ -717,3 +715,5 @@ canvas.addEventListener('mouseover', handlefocus, false);
 canvas.addEventListener('mouseout', handlefocus, false);
 canvas.addEventListener('keydown', handlekeydown, false);
 canvas.addEventListener('mousedown', handlemousedown, false);
+canvas.addEventListener('mousemove', handlemousemove, false);
+canvas.addEventListener('mouseup', handlemouseup, false);

@@ -1,6 +1,6 @@
 <div class = "right_paragraph">
 	<ul plain>
-		<lh><b> Best Solutions </b></lh>
+		<lh id="best_sol"><b> Best Solutions </b></lh>
 		<% HighScore.all.order(:id).each do |hs|%>
 			<% i = hs.level %>
 			<% bound = 0 %>
@@ -14,3 +14,11 @@
 		<% end %>
 	</ul>
 </div>
+
+<script>
+$(document).ready(function(){
+  $("#best_sol").click(function(){
+    $("li").toggle();
+  });
+});
+</script>
