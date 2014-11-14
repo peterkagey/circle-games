@@ -454,7 +454,7 @@ function move_everything(direction){
   }
 }
 
-var handlemousedown = function() { // Where the clickiness happens.
+var handlemousedown = function(event) { // Where the clickiness happens.
   mouseDown = true; dragging = false;
   var a; var b;
   var ab = ab_from_xy(canvasX, canvasY);
@@ -518,7 +518,7 @@ function draw_menu_bar(){
   if(a_width > 14){ color_and_print_string_at("\u2192\u2190", 11, 0, "flip"); }
 }
 
-canvas.oncontextmenu = function() {
+canvas.oncontextmenu = function(event) {
   return false;
 }
 
@@ -533,7 +533,7 @@ var handlefocus = function(e){
   return true;
 };
 
-var handlemousemove = function(){
+var handlemousemove = function(event){
   var coords = canvas.relMouseCoords(event);
   canvasX = coords.x;
   canvasY = coords.y;
@@ -552,7 +552,7 @@ var handlemousemove = function(){
   }
 }
 
-var handlemouseup = function(){
+var handlemouseup = function(event){
   var a; var b;
   refresh_canvas();
   saveCanvas();
