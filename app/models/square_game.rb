@@ -68,7 +68,7 @@ class SquareGame < ActiveRecord::Base
     new_string
   end
 
-  def self.peteys_little_special_function(n)
+  def self.generates_a123663(n)
     seq = [0]
     k = a = 0
     (1..n).to_a.each do |i| 
