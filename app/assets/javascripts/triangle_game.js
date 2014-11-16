@@ -53,7 +53,7 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
 var canvas = document.getElementById("triangle_game_canvas");
 var context = canvas.getContext("2d");
 var labels = []
-var a_width = 20; var b_height = 14;
+var a_width = 15; var b_height = 14;
 var r = 25; var l = 65; //length of side of equilateral triangle
 var color1 = '#404040'; var color2 = '#444444'; var color3 = '#346a5b'; var color4 = '#2c4d75';
 var game_matrix; var max_vertex = 3;

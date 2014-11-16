@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'triangle_games/show'
   resources :triangle_games
+  resources :free_chesses
   resources :square_games
   resources :high_scores
    root 'square_games#show'
