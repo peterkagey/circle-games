@@ -120,4 +120,3 @@ function show_pieces(){
 
 tile_board()
 show_pieces()
-
