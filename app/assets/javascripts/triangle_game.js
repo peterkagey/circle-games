@@ -1,4 +1,4 @@
-//http://stackoverflow.com/questions/19172936/javascript-get-window-width-minus-scrollbar-width
+// http://stackoverflow.com/questions/19172936/javascript-get-window-width-minus-scrollbar-width
 scrollCompensate = function () {
     var inner = document.createElement('p');
     inner.style.width = "100%";
@@ -14,7 +14,7 @@ scrollCompensate = function () {
     outer.style.overflow = "hidden";
     outer.appendChild(inner);
 
-    document.body.appendChild(outer); //Uncaught TypeError: Cannot read property 'appendChild' of null 
+    document.body.appendChild(outer); //Uncaught TypeError: Cannot read property 'appendChild' of null
     var w1 = inner.offsetWidth;
     outer.style.overflow = 'scroll';
     var w2 = inner.offsetWidth;
@@ -25,7 +25,7 @@ scrollCompensate = function () {
     return (w1 - w2);
 }
 
-// // http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
+// http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
 HTMLCanvasElement.prototype.relMouseCoords = function (event) {
   var totalOffsetX = 0;
   var totalOffsetY = 0;
@@ -75,7 +75,7 @@ function initialize_atox_and_btoy(){
   }
   for(i = 0; i < b_height; i++){
     btoy[i] = i * l * Math.sqrt(3)/2 + l/2;
-  }  
+  }
 }
 function draw_all_circles(){
   for(i = 0; i < a_width * b_height; i++){
@@ -161,9 +161,8 @@ canvas.onclick = function() {
     if (distance(i_to_x(i), i_to_y(i), canvasX, canvasY) < r){
       labels[i]++;
       refresh_canvas();
-      // refresh_canvas();
       return false;
-    }  
+    }
   }
 }
 
@@ -172,9 +171,8 @@ canvas.oncontextmenu = function() {
     if (distance(i_to_x(i), i_to_y(i), canvasX, canvasY) < r){
       labels[i] = 0;
       refresh_canvas();
-//       // refresh_canvas();
       return false;
-    }  
+    }
   }
 }
 
@@ -235,25 +233,25 @@ function compare_right_and_down_and_update(i){
   if (i_to_a(i) != a_width - 1 && labels[i+1] > 0 && labels[i+1] != i_state){
       i_touches_j(i_state, labels[i+1], game_matrix);
     }
-    
+
   if (i_to_b(i) % 2 == 0){ // EVEN goes down and to right "\"
     if (i_to_b(i) < b_height && labels[i+a_width] > 0 && labels[i+a_width] != i_state){
       i_touches_j(i_state, labels[i+a_width], game_matrix);
-    }    
+    }
   }else{ // ODD goes down and to left "/"
     if (i_to_b(i) < b_height && labels[i+a_width] > 0 && labels[i+a_width] != i_state){
       i_touches_j(i_state, labels[i+a_width], game_matrix);
-    }    
+    }
   }
 
   if (i_to_b(i) % 2 == 0){ // EVEN goes down and to left "/"
     if (i_to_a(i) > 0 && i_to_b(i) < b_height && labels[i+a_width-1] > 0 && labels[i+a_width-1] != i_state){
       i_touches_j(i_state, labels[i+a_width-1], game_matrix);
-    }    
+    }
   }else{ // ODD goes down and to right "\"
     if (i_to_a(i) != a_width - 1 && i_to_b(i) < b_height && labels[i+a_width+1] > 0 && labels[i+a_width+1] != i_state){
       i_touches_j(i_state, labels[i+a_width+1], game_matrix);
-    }    
+    }
   }
 }
 
@@ -265,25 +263,25 @@ function compare_right_and_down_and_draw(i){
   if (i_to_a(i) != a_width - 1 && labels[i+1] > 0 && labels[i+1] != i_state){
       draw_line(i, i+1);
     }
-    
+
   if (i_to_b(i) % 2 == 0){ // EVEN goes down and to right "\"
     if (i_to_b(i) < b_height && labels[i+a_width] > 0 && labels[i+a_width] != i_state){
       draw_line(i, i + a_width);
-    }    
+    }
   }else{ // ODD goes down and to left "/"
     if (i_to_b(i) < b_height && labels[i+a_width] > 0 && labels[i+a_width] != i_state){
       draw_line(i, i + a_width);
-    }    
+    }
   }
 
   if (i_to_b(i) % 2 == 0){ // EVEN goes down and to left "/"
     if (i_to_a(i) > 0 && i_to_b(i) < b_height && labels[i+a_width-1] > 0 && labels[i+a_width-1] != i_state){
       draw_line(i, i + a_width - 1);
-    }    
+    }
   }else{ // ODD goes down and to right "\"
     if (i_to_a(i) != a_width - 1 && i_to_b(i) < b_height && labels[i+a_width+1] > 0 && labels[i+a_width+1] != i_state){
       draw_line(i, i + a_width + 1);
-    }    
+    }
   }
 }
 
@@ -301,7 +299,7 @@ function set_alec_string(){
       }else{
         alec_string = alec_string + " " + fix_s("", len)
       }
-    } 
+    }
     alec_string = alec_string + "\n";
   }
   document.getElementById("alec_notes").value     = alec_string;
@@ -318,7 +316,7 @@ function number_of_vertices(){
 
 function draw_menu_bar(){
   print_string_at(number_of_vertices(), 0);
-  print_string_at(largest_full_submatrix(game_matrix), 1); 
+  print_string_at(largest_full_submatrix(game_matrix), 1);
 }
 
 //////////////////////////////////////////////

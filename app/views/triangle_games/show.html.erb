@@ -1,4 +1,12 @@
 <title>PK | Triangle Game</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<div class="back_button">
+  <h3><%= link_to "Back to home page", "/" %></h3>
+</div>
+<p>
+  <br>
+  This is a less sophisticated version of
+  <%= link_to "Square Games", square_games_path %>.
+</p>
 <%= render partial: "triangle_game_canvas" %>
 <%#= render partial: "high_scores" %>

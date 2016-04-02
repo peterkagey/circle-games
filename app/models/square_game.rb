@@ -39,11 +39,11 @@ class SquareGame < ActiveRecord::Base
     if solution_string.blank?
       a = 1; b = 1; start_a = 0; start_b = 0
     end
-    { 
-      :solution => solution_string, 
-      :new_a => a, 
-      :new_b => b, 
-      :start_a => sa.blank? ? start_a : sa.to_i, 
+    {
+      :solution => solution_string,
+      :new_a => a,
+      :new_b => b,
+      :start_a => sa.blank? ? start_a : sa.to_i,
       :start_b => sb.blank? ? start_b : sb.to_i
     }
   end
@@ -71,9 +71,9 @@ class SquareGame < ActiveRecord::Base
   def self.generates_a123663(n)
     seq = [0]
     k = a = 0
-    (1..n).to_a.each do |i| 
+    (1..n).to_a.each do |i|
       2.times do
-        k.times do 
+        k.times do
           a+=2
           seq << a
         end
@@ -82,7 +82,7 @@ class SquareGame < ActiveRecord::Base
       end
       k += 1
     end
-    return seq
+    seq
   end
 
   def self.a123663

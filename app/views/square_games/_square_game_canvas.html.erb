@@ -1,33 +1,69 @@
 <div class = "canvas">
-	<canvas id="square_game_canvas" tabindex=1></canvas>
-	<br> This is a new <a href="http://oeis.org/">OEIS</a> sequence!
+  <canvas id="square_game_canvas" tabindex=1></canvas>
+  <%= form_for SquareGame.new do |f| %>
+    <%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
+    <%= f.hidden_field :level, size:1 %>
+    <%= f.hidden_field :max_a, size:1 %>
+    <%= f.hidden_field :max_b, size:1 %>
+    <%= f.hidden_field :solution, size:30 %>
+  <% end %>
 
- 	<%= form_for SquareGame.new do |f| %>
-		<%= f.hidden_field :vertices, size:1 %> <!-- FIXME hidden_field -->
-		<%= f.hidden_field :level, size:1 %>
-		<%= f.hidden_field :max_a, size:1 %>
-		<%= f.hidden_field :max_b, size:1 %>
-		<%= f.hidden_field :solution, size:30 %>
-		<div id = "connections"> 
-			<lh id="connect"><b> Connections </b></lh><br>
-			<%= text_area(:alec, :notes, rows: 12) %>
-		</div>
-	<% end %>
-
-	<%= javascript_include_tag 'square_game' %>
-	<%= "<script>initialize_everything(#{@jshash});</script>".html_safe %>
+  <%= javascript_include_tag 'square_game_header' %>
+  <%= javascript_include_tag 'square_game' %>
+  <%= javascript_include_tag 'square_game_event_listeners' %>
+  <%= "<script>initialize_everything(#{@jshash});</script>".html_safe %>
 </div>
+
+<p>
+  This is a <a href="https://oeis.org/search?q=seq%3A2%2C4%2C6%2C9%2C12%2C15%2C%3F%2C%3F%2C30%7Cseq%3A2%2C4%2C6%2C9%2C12%2C15%2C%3F%2C%3F%2C31&sort=&language=english&go=Search">new OEIS sequence</a>!
+</p>
+<p>
+  Found a bug? Please report it on <a href="https://github.com/PeterKagey/circle-games/issues">GitHub</a>!
+</p>
+
+
+<div id = "connections">
+  <lh id="connect"><b> Connections </b></lh><br>
+  <%= text_area(:alec, :notes, rows: 20) %>
+</div>
+
 <div id = "instructions">
-	<lh id="instr"><b> Instructions </b></lh>
-	<p id="instructions_paragraph">
-		Connect every number up to N to every smaller number using as few circles as possible. <br>
-		(The links under "Best Solutions" contain some examples.) <br>
-		Clicking will decrease the value in a circle and right clicking will increase the value in a circle. <br>
-		You can click and drag to move circles. <br>
-		If you type any letter while your mouse is over a cirle, it will remove the value inside. <br>
-		The circle in the left hand corner records the highest number that is fully connected. <br>
-		The circle to the right of that records how many circles are in play.<br>
-		The "S" button will allow you to submit your score and update the high-scores table.<br>
-		The number in the right hand corner will let you change how high you can select.<br>
-	</p>
+  <lh id="instr"><b> Instructions </b></lh>
+  <ul id="instructions_paragraph">
+    <li>
+      The goal of this game is to connect all "colors" (numbers 1..N) of a graph
+      restricted to a square tiling—using the fewest number of vertices
+      possible.
+    </li>
+    <li>
+      In other words, for every n ≠ m, there needs to be a circle with n connected to a circle with m.
+    </li>
+    <li>
+      (The links under "Best Solutions" contain some examples.)
+    </li>
+    <li>
+      Clicking on a vertex will decrease the value in the circle and right clicking will increase the value in a circle.
+    </li>
+    <li>
+      You can move vertexes by clicking and dragging.
+    </li>
+    <li>
+      If you type any character while your mouse is over a vertex, it will delete the vertex.
+    </li>
+    <li>
+      The circle in the upper-left corner gives the color of the greatest sub-graph that is fully connected.
+    </li>
+    <li>
+      The circle to the right of that records the "size" of the graph: the number of vertices in play.
+    </li>
+    <li>
+    The red edges denote colors that are twice-connected.
+    </li>
+    <li>
+    The "S" button will allow you to save your solution and update the high-scores table.
+    </li>
+    <li>
+    The number in the upper-right corner will let you adjust the maximum labelling for a vertex.
+    </li>
+  </ul>
 </div>
