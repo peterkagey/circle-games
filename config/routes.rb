@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :square_games
   resources :high_scores
    root 'square_games#show'
+  resources :conways_game_of_life
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
