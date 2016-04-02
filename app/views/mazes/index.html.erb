@@ -1,0 +1,14 @@
+<div class="back_button">
+  <h3><%= link_to "Back to home page", "/" %></h3>
+  <p><br>Click on a section to turn it <b style="color: #18C">blue</b>; right click on a section to turn it <b style="color: #AAA">grey</b>.</p>
+</div>
+<div class = "canvas">
+  <canvas id="maze" tabindex=1></canvas>
+  <%= javascript_include_tag 'circle_game_header' %>
+  <%= javascript_include_tag 'mazes' %>
+<p>
+<br>
+  Found a bug? Please report it on
+  <a href="https://github.com/PeterKagey/circle-games/issues">GitHub</a>!
+</p>
+</div>

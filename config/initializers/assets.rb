@@ -5,6 +5,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w(
   circle_game_header.js
   conways_game_of_life.js
+  mazes.js
   square_game.js
   square_game_event_listeners.js
   triangle_game.js
