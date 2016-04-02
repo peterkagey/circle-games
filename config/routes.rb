@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
+  root 'landing_page#show'
+
   get 'triangle_games/show'
   resources :triangle_games
   resources :free_chesses
   resources :square_games
   resources :high_scores
-   root 'square_games#show'
   resources :conways_game_of_life
   resources :landing_page
   resources :mazes
