@@ -1,6 +1,6 @@
 <div class = "right_paragraph">
-	<ul plain>
-		<lh id="best_sol"><b> Best Solutions </b></lh>
+	<ul id = "best_solutions">
+		<lh><b> Best Solutions </b></lh>
 		<% HighScore.all.order(:id).each do |hs|%>
 			<% i = hs.level %>
 			<% bound = 0 %>
