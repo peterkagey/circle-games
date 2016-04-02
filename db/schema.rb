@@ -16,12 +16,12 @@ ActiveRecord::Schema.define(version: 20141116200154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "free_chesses", force: true do |t|
+  create_table "free_chesses", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "high_scores", force: true do |t|
+  create_table "high_scores", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "level"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20141116200154) do
     t.integer  "best_game_id"
   end
 
-  create_table "square_games", force: true do |t|
+  create_table "square_games", force: :cascade do |t|
     t.integer  "vertices"
     t.integer  "level"
     t.text     "solution"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20141116200154) do
     t.datetime "updated_at"
   end
 
-  create_table "triangle_games", force: true do |t|
+  create_table "triangle_games", force: :cascade do |t|
     t.integer  "vertices"
     t.integer  "level"
     t.integer  "start_a"
