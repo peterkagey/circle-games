@@ -1,25 +1,27 @@
 *{
 	border 		 : 0;
-	color 		 : #cccccc;
+	color 		 : #333;
 	font-family	 : helvetica, sans-serif;
 	margin		 : 0;
 	padding 	 : 0;
 }
 
 a{
+	font-weight: bold;
 	text-decoration : none;
-}
-
-a:hover {
   color : #346a5b;
 }
 
+a:hover {
+	color : #6A345B;
+}
+
 body{
-	background-color : #222222;
+	background-color : #ddd;
+	padding : 20px 20px 0 20px;
 	z-index 		 : -1;
 }
-canvas{
-	background-color	: #444444;
+canvas {
 	-moz-user-select	: none;
 	-khtml-user-select  : none;
  	-webkit-user-select : none;
@@ -42,36 +44,26 @@ lh{
 }
 
 lh#best_sol{
-	padding-bottom: 25px;
+	padding-bottom : 25px;
 }
 
-li{
-	display      : none;
-	font-family  : Courier;
-	text-align 	 : left;
-	white-space  : pre-wrap;
-	width 		 : 120;
-}
-
-li > a{
-	font-family  : Courier;
-	text-align 	 : left;
-	white-space  : pre-wrap;
-	width 		 : 120;
+li {
+	text-align 	: left;
+	margin-left : 20px
 }
 
 p{
-	margin 		 : 0;
-	padding 	 : 0;
-	text-indent	 : 50px;
+	margin 		 	 : 0;
+	padding 		 : 0 20px 0 20px;
 	text-align 	 : justify;
+	text-indent	 : 10px;
 	text-justify : newspaper;
 }
 
 pre{
+	font-family  : Courier;
 	font-size 	 : 2em;
 	font-variant : small-caps;
-	font-family  : Courier;
 	padding-left : 100px;
 	text-indent  : 0;
 }
@@ -79,12 +71,11 @@ pre{
 pre > a{
 	font-family  : Courier;
 	padding-left : 100px;
-	text-indent  : 0;	
+	text-indent  : 0;
 }
 
 
 ul{
-	list-style-type : none;
 	padding 		: 0, 0, 25px, 0;
 	width 			: 120;
 }
@@ -94,11 +85,15 @@ ul{
 	 /*  Class  */
 	/* ------- */
 
+.back_button {
+	padding : 20px 20px 0px 20px;
+}
+
 .canvas{
 	display : inline-block;
 	float 	: left;
 	margin  : 0;
-	padding : 10px 0px 0px 0px;
+	padding : 20px 20px 20px 20px;
 	width 	: fit-content;
 }
 
@@ -163,8 +158,12 @@ ul{
 	padding 		 : 15px;
 }
 
+#conway {
+	border 	: 2px solid black;
+}
+
 #connections{
-	padding : 0 25px 0 25px;	
+	padding : 15px 25px 0 25px;
 }
 
 #foo{
@@ -182,7 +181,7 @@ ul{
 	display 	: inline-block;
 	font-size 	: 2em;
 	font-weight : 500;
-	padding 	: 10px 10px 10px 20px;	
+	padding 	: 10px 10px 10px 20px;
 }
 
 #instructions{
