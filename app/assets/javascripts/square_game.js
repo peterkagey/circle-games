@@ -3,7 +3,11 @@ var context = canvas.getContext("2d");
 
 var backCanvas = document.createElement('canvas');
 var backCtx = backCanvas.getContext('2d');
-function saveCanvas(){ backCtx.drawImage(canvas, 0,0); }
+function saveCanvas(){
+  backCanvas.width = canvas.width;
+  backCanvas.height = canvas.height;
+  backCtx.drawImage(canvas, 0,0);
+}
 function restoreCanvas(){ context.drawImage(backCanvas, 0,0);}
 
 var default_a_width; var default_b_height;
