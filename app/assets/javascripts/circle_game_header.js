@@ -34,8 +34,8 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
   var currentElement = this;
 
   do {
-      totalOffsetX += currentElement.offsetLeft;
-      totalOffsetY += currentElement.offsetTop;
+    totalOffsetX += currentElement.offsetLeft;
+    totalOffsetY += currentElement.offsetTop;
   }
   while (currentElement = currentElement.offsetParent)
 
