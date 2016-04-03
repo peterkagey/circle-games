@@ -43,9 +43,14 @@ lh {
 	font-variant : small-caps;
 }
 
+.no_bullets > li {
+  list-style-type: none;
+  /*padding:0;*/
+  margin:0;
+}
+
 li {
 	margin-left : 20px
-	text-align : left;
 }
 
 p {
