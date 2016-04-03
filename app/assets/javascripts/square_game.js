@@ -3,7 +3,7 @@ var context = canvas.getContext("2d");
 
 var backCanvas = document.createElement('canvas');
 var backCtx = backCanvas.getContext('2d');
-function saveCanvas(){
+function saveCanvas() {
   backCanvas.width = canvas.width;
   backCanvas.height = canvas.height;
   backCtx.drawImage(canvas, 0,0);
@@ -11,10 +11,9 @@ function saveCanvas(){
 function restoreCanvas(){ context.drawImage(backCanvas, 0,0);}
 
 var default_a_width; var default_b_height;
-var ruby_a; var ruby_b;
+var rubyA; var rubyB;
 var a_width; var b_height;
-var a_shift; var b_shift;
-var r
+var aShift; var bShift; var r;
 var circleBorderColor = '#ccc'
 var backgroundColor = '#ddd'
 var gameCircleFill = '#346a5b'
@@ -39,21 +38,23 @@ function set_r(){
   border_width = r / 12
 }
 
-function initialize_everything(ss, ras, rbs, raw, rbh){
-  ruby_a = raw; ruby_b = rbh; a_shift = ras; b_shift = rbs;
+function initialize_everything(solutionString, rubyAShift, rubyBShift, rubyAVal, rubyBVal){
+  rubyA = rubyAVal; aShift = rubyAShift
+  rubyB = rubyBVal; bShift = rubyBShift
   set_size();
   initialize_atox_and_btoy();
   initialize_labels(a_width, b_height);
-  set_initial_positions(ss);
+  set_initial_positions(solutionString);
   max_vertex = Math.max(max_label(), max_vertex);
   refresh_canvas();
 }
+
 function set_size(){
   default_a_width = Math.max(6, Math.round((window.innerWidth-scrollCompensate())/60));
   default_b_height = 10;
   //assume that a is too big, and b is never too big
-  a_width = Math.max(ruby_a, default_a_width);
-  b_height = Math.max(ruby_b+b_shift+1, default_b_height);
+  a_width = Math.max(rubyA, default_a_width);
+  b_height = Math.max(rubyB+bShift+1, default_b_height);
   canvas.width = window.innerWidth - scrollCompensate() - 40;
   canvas.height = (b_height * canvas.width) / a_width;
   set_r();
@@ -75,14 +76,14 @@ function initialize_labels(a, b){
   }
 }
 function set_initial_positions(solution_string){
-  if (ruby_a + a_shift > a_width){
-    a_shift = a_width - ruby_a
+  if (rubyA + aShift > a_width){
+    aShift = a_width - rubyA
   };
   var solution_list = solution_string.split(",");
-  var b_row = b_shift;
+  var b_row = bShift;
   for (i = 0; i < solution_list.length; i++){
-    var a_pos = (i % ruby_a) + a_shift;
-    if (a_pos == a_shift){
+    var a_pos = (i % rubyA) + aShift;
+    if (a_pos == aShift){
       b_row++;
     }
     labels[index(a_pos, b_row)] = parseInt(solution_list[i]);
@@ -427,13 +428,14 @@ canvas.oncontextmenu = function(event) {
   return false;
 }
 
-
 $(document).ready(function(){
   $("#instr").click(function(){
     $("#instructions_paragraph").toggle();
   });
   $("#connect").click(function(){
     $("#alec_notes").toggle();
+    $("#alec_notes").width(canvas.width - 30)
+    document.getElementById("alec_notes").value = alec_string;
   });
   $("#best_sol").click(function(){
     $("li").toggle();
