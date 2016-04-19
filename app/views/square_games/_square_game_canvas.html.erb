@@ -30,40 +30,21 @@
 <div id = "instructions">
   <lh id="instr"><b> Instructions </b></lh>
   <ul id="instructions_paragraph">
-    <li>
-      The goal of this game is to connect all "colors" (numbers 1..N) of a graph
-      restricted to a square tiling—using the fewest number of vertices
-      possible.
-    </li>
-    <li>
+    <% rules = %(
+      The goal of this game is to connect all "colors" (numbers 1..N) of a graph restricted to a square tiling—using the fewest number of vertices possible.
       In other words, for every n ≠ m, there needs to be a circle with n connected to a circle with m.
-    </li>
-    <li>
       (The links under "Best Solutions" contain some examples.)
-    </li>
-    <li>
       Clicking on a vertex will decrease the value in the circle and right clicking will increase the value in a circle.
-    </li>
-    <li>
       You can move vertexes by clicking and dragging.
-    </li>
-    <li>
       If you type any character while your mouse is over a vertex, it will delete the vertex.
-    </li>
-    <li>
       The circle in the upper-left corner gives the color of the greatest sub-graph that is fully connected.
-    </li>
-    <li>
       The circle to the right of that records the "size" of the graph: the number of vertices in play.
-    </li>
-    <li>
-    The red edges denote colors that are twice-connected.
-    </li>
-    <li>
-    The "S" button will allow you to save your solution and update the high-scores table.
-    </li>
-    <li>
-    The number in the upper-right corner will let you adjust the maximum labelling for a vertex.
-    </li>
+      The red edges denote colors that are twice-connected.
+      The "S" button will allow you to save your solution and update the high-scores table.
+      The number in the upper-right corner will let you adjust the maximum labelling for a vertex.
+    ) %>
+    <% rules.strip.split("\n").each do |rule| %>
+      <li><%= rule %></li>
+    <% end %>
   </ul>
 </div>
