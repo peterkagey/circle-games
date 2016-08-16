@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'tree_generator/index'
+
   root 'landing_page#show'
 
   get 'triangle_games/show'
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
   resources :conways_game_of_life
   resources :landing_page
   resources :mazes
+  resources :tree_generator
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
