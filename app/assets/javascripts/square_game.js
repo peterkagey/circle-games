@@ -1,6 +1,8 @@
 var canvas = document.getElementById("square_game_canvas");
 var context = canvas.getContext("2d");
 
+var scale = window.devicePixelRatio || 1
+
 var backCanvas = document.createElement('canvas');
 var backCtx = backCanvas.getContext('2d');
 function saveCanvas() {
@@ -26,14 +28,11 @@ var max_vertex = 3;
 var level; var score;
 var alec_string;
 var coords; var canvasX; var canvasY
-var clickXdel; var clickYdel;
-var click_original_a; var click_original_b;
-var value_of_moving_circle
 var font_size = 20; var border_width = 2;
 var canvasBuffer = 20;
 
 function set_r(){
-  r = Math.min(25, 0.5*canvas.width/(a_width*1.25));
+  r = scale * Math.min(25, 0.5*canvas.width/(a_width*1.25)/scale);
   font_size = Math.round(4 * r / 5);
   border_width = r / 12
 }
@@ -55,12 +54,10 @@ function set_size(){
   //assume that a is too big, and b is never too big
   a_width = Math.max(rubyA, default_a_width);
   b_height = Math.max(rubyB+bShift+1, default_b_height);
-  canvas.width = window.innerWidth - scrollCompensate() - 40;
-  canvas.height = (b_height * canvas.width) / a_width;
+  setCanvasSize();
   set_r();
-  backCanvas.width = canvas.width;
-  backCanvas.height = canvas.height;
 }
+
 var atox = []; var btoy = [];
 function initialize_atox_and_btoy(){
   for (a = 0; a < a_width ; a++){
@@ -325,25 +322,33 @@ function refresh_canvas(){
   set_rails_values();
 }
 
+function setCanvasSize(){
+  canvas.width = scale * Math.min(window.innerWidth-scrollCompensate() - 40, 63*a_width);
+  canvas.height = (b_height * canvas.width) / a_width;
+  canvas.style.width = canvas.width / scale + "px";
+  canvas.style.height = canvas.height / scale + "px";
+}
+
 function resize_canvas(dimension){
   if (dimension == "widen"){
     a_width++;
-    canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
-    canvas.height = (b_height * canvas.width) / a_width;
+    setCanvasSize()
     set_r();
     initialize_atox_and_btoy();
     for(i = 0; i < b_height-1; i++){
       labels.splice(i*a_width+a_width - 1, 0, 0);
     }
   }
+
   if (dimension == "heighten"){
     b_height++;
-    canvas.height = (b_height * canvas.width) / a_width;
+    setCanvasSize()
     initialize_atox_and_btoy();
     for(i = a_width*(b_height-2); i < a_width*(b_height-1); i++){
       labels[i] = 0;
     }
   }
+
   if (dimension == "narrow"){
     for(i = 0; i < labels.length/a_width; i++){
       if(labels[i * a_width + a_width - 1] != 0){
@@ -351,14 +356,14 @@ function resize_canvas(dimension){
       }
     }
     a_width--;
-    canvas.width = Math.min(window.innerWidth-scrollCompensate(), 63*a_width);
-    canvas.height = (b_height * canvas.width) / a_width;
+    setCanvasSize()
     set_r();
     initialize_atox_and_btoy();
     for(i = 1; i < b_height; i++){
       labels.splice(i * a_width, 1)
     }
   }
+
   if (dimension == "shorten"){
     for(i = 0; i < a_width; i++){
       if(labels[labels.length - 1 - i] != 0){
@@ -366,7 +371,7 @@ function resize_canvas(dimension){
       }
     }
     b_height--;
-    canvas.height = (b_height * canvas.width) / a_width;
+    setCanvasSize();
     initialize_atox_and_btoy();
     labels.splice(labels.length-a_width, a_width);
   }
