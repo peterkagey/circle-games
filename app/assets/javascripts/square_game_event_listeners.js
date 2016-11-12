@@ -93,6 +93,9 @@ var handlemouseup = function(event){
 var handlekeydown = function(){
   var ab = ab_from_xy(canvasX, canvasY);
   a = ab[0]; b = ab[1];
+
+  if (event.keyCode == 67) { return colorValue(labels[index(a,b)]) };
+
   if (distance(atox[a], btoy[b], canvasX, canvasY) < r){
     labels[index(a,b)] = 0;
     refresh_canvas();
