@@ -130,7 +130,7 @@ function draw_circle_based_on_state(a, b){
   } else if (state == 0) {
     drawCircleAtXY(x, y, backgroundColor, circleBorderColor);
   } else {
-    drawGameCircleAtXY(state, x, y);
+    drawGameCircleAtXY(state, x, y, gameCircleFill);
   }
 }
 
@@ -144,8 +144,8 @@ function drawCircleAtXY(x, y, fillColor, strokeColor) {
   context.stroke();
 }
 
-function drawGameCircleAtXY(text_string, x, y) {
-  drawCircleAtXY(x, y, gameCircleFill, gameCircleFill)
+function drawGameCircleAtXY(text_string, x, y, color) {
+  drawCircleAtXY(x, y, color, color)
   print_string_at_xy(text_string, x, y);
 }
 
@@ -165,6 +165,15 @@ function print_string_at_xy(text_string, x, y, flipstring){
 function color_and_print_string_at(string, a, b, flipstring){
   draw_circle_based_on_state(a,b);
   print_string_at_xy(string, atox[a], btoy[b], flipstring);
+}
+
+function colorValue(value){
+  for (b = 1; b < b_height ; b++){
+    for (a = 0; a < a_width ; a++){
+      if (labels[index(a, b)] == value)
+        drawGameCircleAtXY(labels[index(a, b)], atox[a], btoy[b], "#752c4d")
+    }
+  }
 }
 
 function number_of_vertices(){

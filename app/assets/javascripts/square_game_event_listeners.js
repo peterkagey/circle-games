@@ -62,7 +62,7 @@ var handlemousemove = function(event){
   if (mouseDown && event.which == 1 && value_of_moving_circle > 0){
     dragging = true;
     restoreCanvas();
-    drawGameCircleAtXY(value_of_moving_circle, canvasX + clickXdel, canvasY + clickYdel)
+    drawGameCircleAtXY(value_of_moving_circle, canvasX + clickXdel, canvasY + clickYdel, gameCircleFill)
   }
 }
 
