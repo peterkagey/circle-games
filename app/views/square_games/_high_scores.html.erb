@@ -10,6 +10,8 @@
 				end %>
 			<% bound -= 1 if i == 0 %>
 			<% bound = [bound, i*((i-1)/4.0).ceil].max %>
+			<% bound = 9  if i == 5 %>
+			<% bound = 24 if i == 9 %>
 			<%= content_tag :li, (link_to ("%3.3s" % "#{bound}" + " ≤ " + "f(#{i})" + " ≤ " + "%-3.5s" % "#{hs.best_score}").html_safe, hs) if i > 1%>
 		<% end %>
 	</ul>
