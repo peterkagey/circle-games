@@ -9,6 +9,7 @@ Rails.application.config.assets.precompile += %w(
   square_game.js
   square_game_event_listeners.js
   triangle_game.js
+  underscore.js
 )
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
