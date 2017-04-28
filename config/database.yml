@@ -12,8 +12,10 @@ development:
   adapter: postgresql
   encoding: unicode
   database: postgres_db_dev
-  username: pkagey
+  username: postgres
+  password:
   pool: 5
+  host: "0.0.0.0"
 
 production:
   adapter: postgresql
