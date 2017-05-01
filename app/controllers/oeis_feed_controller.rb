@@ -3,7 +3,7 @@ class OeisFeedController < ApplicationController
   def feed
     author = params[:author]
 
-    search_params = author.blank? ? "keyword%3Anew" : "author%3A#{author}&"
+    search_params = author.blank? ? "keyword%3Anice" : "author%3A#{author}&"
     url = URI.parse("http://oeis.org/search?q=#{search_params}&sort=created&fmt=json")
     req = Net::HTTP::Get.new(url.to_s)
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
