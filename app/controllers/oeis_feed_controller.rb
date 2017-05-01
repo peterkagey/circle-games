@@ -9,7 +9,7 @@ class OeisFeedController < ApplicationController
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
     @oeis_sequences = JSON.parse(res.body)["results"] || []
 
-    @author_name = author.blank? ? "OEIS contributors" : author.split(",").map(&:camelize).join(" ")
+    @author_name = author.blank? ? "OEIS contributors" : author.split(/,|%2c/i).map(&:camelize).join(" ")
     @description = "Most recent OEIS Sequences authored by #{@author_name}"
     @title = "New OEIS Sequences from #{@author_name}"
 
