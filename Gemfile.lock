@@ -146,7 +146,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (= 1.15.2)
+  bundler (= 1.17.2)
   coffee-rails
   jbuilder
   jquery-rails
@@ -160,7 +160,7 @@ DEPENDENCIES
   uglifier
 
 RUBY VERSION
-   ruby 2.4.6p354
+   ruby 2.6.5p114
 
 BUNDLED WITH
-   1.15.2
+   1.17.2
