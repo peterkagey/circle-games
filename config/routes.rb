@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'card_trick/index'
+  post 'card_trick/index'
+
   get 'tree_generator/index'
 
   root 'landing_page#show'

@@ -1,0 +1,14 @@
+<h1>Communicating the Card: Assistant Instructions</h1>
+<ul>
+  <li>Ask audience for five numbers between 1 and 100 (inclusive).</li>
+  <li>Type these numbers below, comma separated. (e.g. 59, 23, 27, 87, 93)</li>
+  <li>
+    <%= form_tag(url: "/search", method: "get") do |f| %>
+      <%= label_tag(:audience_numbers, "Audience numbers:") %>
+      <%= text_field_tag(:audience_numbers) %>
+      <%= submit_tag("Compute!") %>
+    <% end %>
+  </li>
+  <li><b><%= @assistant_list %></b> ← (Once you hit "Compute!", <b>four</b> of the numbers should appear here.)</li>
+  <li>Read the four numbers to me in the order that they appear.</li>
+</ul>
