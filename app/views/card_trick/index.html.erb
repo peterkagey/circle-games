@@ -6,7 +6,7 @@
 </span>
 <h2>Assistant Instructions</h2>
 <ul>
-  <li>Have the magician leave the room, and ask audience for five numbers between 1 and 100, inclusive.</li>
+  <li>Have the magician leave the room, and ask audience for five distinct numbers between 1 and 100, inclusive.</li>
   <li>Type these numbers below, comma separated. (e.g. 27, 87, 93, 23, 59)</li>
   <li>
     <%= form_tag() do |f| %>
@@ -16,7 +16,7 @@
     <% end %>
   </li>
   <li><b><%= @assistant_list %></b> ← (Once you hit "Compute!", <b>four</b> of the numbers should appear here.)</li>
-  <li>Read the four numbers to me in the order that they appear.</li>
+  <li>Read the four numbers to the magician in the order that they appear.</li>
 </ul>
 <br>
 <br>
