@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :triangle_games
   resources :free_chesses
   resources :square_games
+  resources :card_trick
   resources :high_scores
   resources :conways_game_of_life
   resources :landing_page

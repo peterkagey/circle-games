@@ -1,9 +1,15 @@
-<h1>Communicating the Card: Assistant Instructions</h1>
+<h1>Communicating the Card</h1>
+<span>
+  (An implementation of the algorithm described in part 5 of the paper
+  <a href="http://web.stonehill.edu/compsci/cardTrick.pdf">Using a Card Trick to Teach Discrete Mathematics</a>
+  by Shai Simonson and Tara S. Holm.)
+</span>
+<h2>Assistant Instructions</h2>
 <ul>
-  <li>Ask audience for five numbers between 1 and 100 (inclusive).</li>
+  <li>Have the magician leave the room, and ask audience for five numbers between 1 and 100, inclusive.</li>
   <li>Type these numbers below, comma separated. (e.g. 27, 87, 93, 23, 59)</li>
   <li>
-    <%= form_tag(url: "/search", method: "get") do |f| %>
+    <%= form_tag() do |f| %>
       <%= label_tag(:audience_numbers, "Audience numbers:") %>
       <%= text_field_tag(:audience_numbers, @audience_numbers_text) %>
       <%= submit_tag("Compute!") %>
@@ -15,16 +21,16 @@
 <br>
 <br>
 <br>
-<h1>Communicating the Card: Magician Instructions</h1>
+<h2>Magician Instructions</h2>
 <ul>
   <li>Enter assistant's numbers below, comma separated. (e.g. 59, 87, 27, 23)</li>
   <li>
-    <%= form_tag(url: "/search", method: "get") do |f| %>
+    <%= form_tag() do |f| %>
       <%= label_tag(:ordered_sequence_from_assistant, "Assistant's numbers:") %>
       <%= text_field_tag(:ordered_sequence_from_assistant, @assistant_numbers_text) %>
       <%= submit_tag("Compute!") %>
     <% end %>
   </li>
   <li><b><%= @magician_number %></b> ← (Once you hit "Compute!", <b>one</b> number should appear here.)</li>
-  <li>Read the four numbers to me in the order that they appear.</li>
+  <li>Reveal the secret number to the audience!</li>
 </ul>
