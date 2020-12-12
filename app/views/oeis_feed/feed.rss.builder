@@ -11,9 +11,12 @@ xml.rss :version => "2.0" do
       xml.item do
         xml.title "A#{seq["number"]}: #{seq["name"]}"
         xml.description seq["data"]
-        xml.author seq["author"]
         xml.link "http://oeis.org/A#{seq["number"]}"
         xml.guid "http://oeis.org/A#{seq["number"]}"
+        begin
+          xml.pubDate(Date.parse(seq["author"][/\w{3} \d{2} \d{4}/]).rfc822)
+        rescue StandardError => e
+        end
       end
     end
   end
