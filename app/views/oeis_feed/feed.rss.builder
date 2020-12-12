@@ -13,7 +13,7 @@ xml.rss :version => "2.0" do
         xml.description seq["data"]
         xml.author seq["author"]
         xml.link "http://oeis.org/A#{seq["number"]}"
-        xml.guid "A#{seq["number"]}"
+        xml.guid "http://oeis.org/A#{seq["number"]}"
       end
     end
   end
