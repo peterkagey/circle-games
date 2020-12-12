@@ -36,6 +36,10 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
+  # Store files locally.
+  # https://guides.rubyonrails.org/v5.2.0/active_storage_overview.html
+  config.active_storage.service = :local
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

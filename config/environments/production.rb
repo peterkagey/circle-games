@@ -76,4 +76,11 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Store files locally.
+  # https://guides.rubyonrails.org/v5.2.0/active_storage_overview.html
+  # This will make the app have strange behavior with file uploads.
+  # https://devcenter.heroku.com/articles/active-storage-on-heroku
+  config.active_storage.service = :local
+
 end

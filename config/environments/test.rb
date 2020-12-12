@@ -37,6 +37,10 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  # Store files locally.
+  # https://guides.rubyonrails.org/v5.2.0/active_storage_overview.html
+  config.active_storage.service = :test
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
