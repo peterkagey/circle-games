@@ -1,16 +1,22 @@
 var canvas, context
 var tilesAcross, tilesDown, tileSize
-var borderWidth = 5
-var originalColor = "#AAA"
+var borderWidth = 60
+var originalColor = "#CCC"
 var newColor = "#18C"
+var colorCounter = 0;
+var colorz = ["#18C", "#1C8", "#81C", "#8C1", "#C18", "#C81"]
+
 function initializeCanvas() {
   canvas = document.getElementById("maze");
-  tilesDown = 30, tileSize = 50
-  tilesAcross = Math.round((window.innerWidth - scrollCompensate())/tileSize) - 1;
-  tilesDown = Math.floor(window.innerHeight/tileSize) - 2
+  tilesDown = 30, tileSize = 100
+  // tilesAcross = Math.round((window.innerWidth - scrollCompensate())/tileSize) - 1;
+  tilesDown = 50; // Math.floor(window.innerHeight/tileSize) - 2
+  tilesAcross = tilesDown
   canvas.width  = tileSize * tilesAcross
   canvas.height = tileSize * tilesDown
   context = canvas.getContext("2d");
+  context.fillStyle='white';
+  context.fillRect(0,0,canvas.width,canvas.height);
 }
 
 function initializeTiles(){
@@ -29,7 +35,7 @@ function drawAt(ary){
   var y = ary[1]
   context.strokeStyle = originalColor;
   context.lineWidth = borderWidth;
-  context.lineCap="round";
+  context.lineCap="butt";
 
   (tileStateArray[x][y]) ? drawNW(x,y) : drawNE(x,y)
 }
@@ -39,7 +45,7 @@ function drawAt2(ary){
   var y = ary[1]
   context.strokeStyle = newColor;
   context.lineWidth = borderWidth;
-  context.lineCap="round";
+  context.lineCap="butt";
 
   (tileStateArray[x][y]) ? drawNW(x,y) : drawNE(x,y)
 }
@@ -106,15 +112,15 @@ function allTouching(x, y){
 
 function drawNW(x, y){
   context.beginPath();
-  context.moveTo(x * tileSize, y * tileSize);
-  context.lineTo((x + 1) * tileSize, (y + 1) * tileSize);
+  context.moveTo((x - 0.01) * tileSize, (y - 0.01) * tileSize);
+  context.lineTo((x + 1.01) * tileSize, (y + 1.01) * tileSize);
   context.stroke()
 }
 
 function drawNE(x,y){
   context.beginPath();
-  context.moveTo((x + 1) * tileSize, y * tileSize);
-  context.lineTo(x * tileSize, (y + 1) * tileSize);
+  context.moveTo((x + 1.01) * tileSize, (y - 0.01) * tileSize);
+  context.lineTo((x - 0.01) * tileSize, (y + 1.01) * tileSize);
   context.stroke()
 }
 
@@ -132,6 +138,9 @@ var handlemouseup = function(event) {
   canvasX = coords.x; canvasY = coords.y;
   var a = Math.floor(canvasX/tileSize)
   var b = Math.floor(canvasY/tileSize)
+  // colorCounter = (colorCounter + 1) % 6;
+  newColor = colorz[colorCounter];
+  console.log(newColor);
   if (event.which == 1) {
     allTouching(a, b).forEach(drawAt2)
   } else {
