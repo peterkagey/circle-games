@@ -8,7 +8,7 @@
     <%= f.hidden_field :solution, size:30 %>
   <% end %>
 
-  <%= javascript_include_tag 'square_game_header' %>
+  <%= javascript_include_tag 'circle_game_header' %>
   <%= javascript_include_tag 'square_game' %>
   <%= javascript_include_tag 'square_game_event_listeners' %>
   <%= "<script>initialize_everything(#{@jshash});</script>".html_safe %>

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :landing_page
   resources :mazes
   resources :tree_generator
+  resources :triangle_bijection
 
   get 'oeis_feed', to: 'oeis_feed#feed'
   # The priority is based upon order of creation: first created -> highest priority.

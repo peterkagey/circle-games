@@ -1,0 +1,52 @@
+<div class="back_button">
+  <h3><%= link_to "Back to home page", "/" %></h3>
+  <p><br>On the left, the embedded triangle, on the right, an explanation of how the
+first two boxes determine the size and orientation of the triangle and the last
+two boxes determine the position.</p>
+</div>
+<div class = "canvas">
+  <canvas id="html_canvas" class="triangle_bijection_canvas"></canvas>
+  <canvas id="html_canvas2" class="triangle_bijection_canvas"></canvas>
+  <p>Drag these boxes around to change the triangle:</p>
+  <div id="sliders">
+    <div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider active" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider active" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider active" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider active" draggable="true"></div>
+    </div><div class="container inline">
+      <div class="slider" draggable="true"></div>
+    </div>
+  </div>
+  <p>
+  <br>
+    Found a bug? Please report it on
+    <a href="https://github.com/PeterOKagey/circle-games/issues">GitHub</a>!
+  </p>
+</div>
+<%= javascript_include_tag 'triangle_bijection' %>
