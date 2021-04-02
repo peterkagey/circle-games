@@ -1,0 +1,33 @@
+/* line 1, app/assets/stylesheets/triangle_bijection.scss */
+.triangle_bijection_canvas {
+  border: solid black 2px;
+  background-color: #eeeeee;
+}
+
+/* line 6, app/assets/stylesheets/triangle_bijection.scss */
+.container {
+  padding: 4px 2px 4px 2px;
+  width: 50px;
+  height: 50px;
+  background-color: gray;
+  display: inline-block;
+}
+
+/* line 14, app/assets/stylesheets/triangle_bijection.scss */
+.slider {
+  width: 50px;
+  height: 50px;
+  cursor: move;
+  background-color: white;
+}
+
+/* line 21, app/assets/stylesheets/triangle_bijection.scss */
+#sliders {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* line 25, app/assets/stylesheets/triangle_bijection.scss */
+.active {
+  background-color: coral;
+}

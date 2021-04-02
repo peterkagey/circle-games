@@ -1,0 +1,7 @@
+/* line 5, app/assets/stylesheets/tree_generator.scss */
+.tree > pre {
+  font-family: Menlo;
+  line-height: 125%;
+  font-size: 10px;
+  padding: 0;
+}

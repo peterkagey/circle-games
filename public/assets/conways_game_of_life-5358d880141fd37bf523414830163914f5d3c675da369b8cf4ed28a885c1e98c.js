@@ -98,5 +98,4 @@ function initializeEverything() {
   }, 150);
 }
 
-initializeEverything()
-;
+initializeEverything();

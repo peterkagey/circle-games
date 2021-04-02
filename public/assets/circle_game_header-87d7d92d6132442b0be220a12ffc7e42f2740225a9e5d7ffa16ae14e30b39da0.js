@@ -46,5 +46,4 @@ HTMLCanvasElement.prototype.relMouseCoords = function (event) {
   canvasY = Math.round( canvasY * (this.height / this.offsetHeight) );
 
   return {x:canvasX, y:canvasY}
-}
-;
+};

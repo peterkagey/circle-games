@@ -344,5 +344,4 @@ canvas.onmousemove = function(){
   var coords = canvas.relMouseCoords(event);
   canvasX = coords.x;
   canvasY = coords.y;
-}
-;
+};
