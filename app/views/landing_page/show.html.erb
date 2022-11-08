@@ -1,16 +1,18 @@
 <body>
-  <h1> Hi! I'm Peter. </h1>
-  <img src="http://www.gravatar.com/avatar/7c79fd2d283f8c80bb9de85a47b544ce?s=250">
+  <h1> Hi! I'm Peter.</h1>
+  <%# <img src="http://www.gravatar.com/avatar/7c79fd2d283f8c80bb9de85a47b544ce?s=250"> %>
+  <%= image_tag "Profile.jpg", style: 'height:300px;width:auto;' %>
   <h2>
-    <a href="https://blog.peterkagey.com">Blog</a> ::
-    <a href="https://www.github.com/peterokagey/haskellOEIS">Github</a> ::
-    <a href="https://twitter.com/PeterKagey">Twitter</a> ::
-    <a href="https://www.linkedin.com/in/peterkagey">LinkedIn</a> ::
-    <a href="https://oeis.org/search?q=_Peter+Kagey_&sort=created">OEIS</a> ::
-    Nil
+    <a href="https://blog.peterkagey.com">Blog</a> :
+    <a href="https://raw.githubusercontent.com/peterkagey/academic/main/cv/cv.pdf">CV</a> :
+    <a href="https://www.github.com/peterokagey/haskellOEIS">Github</a> :
+    <%# <a href="https://twitter.com/PeterKagey">Twitter</a> : %>
+    <a href="https://www.linkedin.com/in/peterkagey">LinkedIn</a> :
+    <a href="https://oeis.org/search?q=_Peter+Kagey_&sort=created">OEIS</a> :
+    <a href="https://hackage.haskell.org/package/base-4.17.0.0/docs/Data-List.html">[]</a>
   </h2>
   <ul class = "no_bullets">
-    <h3> Here's some stuff I've played around with:</h3>
+    <%# <h3> Here's some stuff I've been very serious about:</h3> %>
     <li><%= link_to "Square Games", square_games_path %></li>
     <li><%= link_to "Triangle Games", triangle_games_path %></li>
     <li><%= link_to "Conway's Game of Life", "conways_game_of_life" %></li>
@@ -18,7 +20,13 @@
     <li><%= link_to "Tree Generator", "tree_generator" %></li>
     <li><%= link_to "Communicating the Card", "card_trick" %></li>
     <li><%= link_to "Triangles in the Triangular Grid", "triangle_bijection" %></li>
-    <li><a href="https://twitter.com/oeisTriangles">Parity Triangles Twitter Bot</a></li>
     <li><a href="https://github.com/peterkagey/OpenishProblems/raw/master/v2/mainfile.pdf">Open(ish) Problems</a></li>
+    <li><ul class = "no_bullets">
+      <li><a href="https://twitter.com/oeisTriangles">@oeisTriangles</a></li>
+      <li><a href="https://twitter.com/RobotWalks">@RobotWalks</a></li>
+      <li><a href="https://twitter.com/xorTriangles">@xorTriangles</a></li>
+      <li><a href="https://twitter.com/BotfonsNeedles">@BotfonsNeedles</a></li>
+      <li><a href="https://twitter.com/BotzierCurves">@BotzierCurves</a></li>
+      </li></ul>
   </ul>
 </body>
