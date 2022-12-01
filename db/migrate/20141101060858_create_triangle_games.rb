@@ -1,4 +1,4 @@
-class CreateTriangleGames < ActiveRecord::Migration
+class CreateTriangleGames < ActiveRecord::Migration[7.0]
   def change
     create_table :triangle_games do |t|
       t.integer :vertices
